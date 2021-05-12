@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;sdzbzjh.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="本周精读内容是 《逃离async&#x2F;await地狱》。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="精读《async&#x2F;await 是把双刃剑》">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/06/17/%E7%B2%BE%E8%AF%BB%E3%80%8Aasync-await-%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91%E3%80%8B/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="本周精读内容是 《逃离async&#x2F;await地狱》。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-17T01:36:52.000Z">
+<meta property="article:modified_time" content="2021-05-12T07:15:41.459Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://sdzbzjh.github.io/2019/06/17/%E7%B2%BE%E8%AF%BB%E3%80%8Aasync-await-%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91%E3%80%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;sdzbzjh.github.io&#x2F;2019&#x2F;06&#x2F;17&#x2F;%E7%B2%BE%E8%AF%BB%E3%80%8Aasync-await-%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91%E3%80%8B&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;06&#x2F;17&#x2F;精读《async-await-是把双刃剑》&#x2F;&quot;,&quot;title&quot;:&quot;精读《async&#x2F;await 是把双刃剑》&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>精读《async/await 是把双刃剑》 | Zeptinary的博客</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Zeptinary的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">若得我命皆由我，才能火里种金莲</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E8%AF%BB"><span class="nav-number">2.</span> <span class="nav-text">精读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="nav-number">3.</span> <span class="nav-text">理解语法糖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zeptinary"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zeptinary</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sdzbzjh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sdzbzjh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:sdzbzjh@gmail.com" title="E-Mail → mailto:sdzbzjh@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sdzbzjh.github.io/2019/06/17/%E7%B2%BE%E8%AF%BB%E3%80%8Aasync-await-%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91%E3%80%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zeptinary">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeptinary的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          精读《async/await 是把双刃剑》
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-17 09:36:52" itemprop="dateCreated datePublished" datetime="2019-06-17T09:36:52+08:00">2019-06-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-12 15:15:41" itemprop="dateModified" datetime="2021-05-12T15:15:41+08:00">2021-05-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ECMAScript-6/" itemprop="url" rel="index"><span itemprop="name">ECMAScript 6</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本周精读内容是 <a target="_blank" rel="noopener" href="https://www.freecodecamp.org/news/avoiding-the-async-await-hell-c77a0fb71c4c/">《逃离async/await地狱》</a>。</p>
+<span id="more"></span>
+
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>下面是随处可见的现代化前端代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> pizzaData = <span class="keyword">await</span> getPizzaData(); <span class="comment">// async call</span></span><br><span class="line">  <span class="keyword">const</span> drinkData = <span class="keyword">await</span> getDrinkData(); <span class="comment">// async call</span></span><br><span class="line">  <span class="keyword">const</span> chosenPizza = choosePizza(); <span class="comment">// sync call</span></span><br><span class="line">  <span class="keyword">const</span> chosenDrink = chooseDrink(); <span class="comment">// sync call</span></span><br><span class="line">  <span class="keyword">await</span> addPizzaToCart(chosenPizza); <span class="comment">// async call</span></span><br><span class="line">  <span class="keyword">await</span> addDrinkToCart(chosenDrink); <span class="comment">// async call</span></span><br><span class="line">  orderItems(); <span class="comment">// async call</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<p><code>await</code>语法本身没有问题，有时候可能是使用者用错了。当<code>pizzaData</code>与<code>drinkData</code>之间没有依赖时，顺序的<code>await</code>会最多让执行时间增加一倍的<code>getPizzaData</code>函数时间，因为<code>getPizzaData</code>与<code>getDrinkData</code>应该并行执行。</p>
+<p>回到被吐槽的回调地狱，虽然代码比较丑，但起码两行回调代码并不会带来阻塞。</p>
+<p>看来语法的简化，带来了性能问题，而且直接影响到用户体验，是不是值得反思一下？</p>
+<p>正确的做法应该是先同时执行函数，再<code>await</code>返回值，这样可以并行执行异步函数。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">async</span> () =&gt; &#123;</span><br><span class="line">  const pizzaPromise = selectPizza()<span class="comment">;</span></span><br><span class="line">  const drinkPromise = selectDrink()<span class="comment">;</span></span><br><span class="line">  await pizzaPromise;</span><br><span class="line">  await drinkPromise;</span><br><span class="line">  orderItems()<span class="comment">; // async call</span></span><br><span class="line">&#125;)()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者使用<code>Promise.all</code>可以让代码更可读：</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">async</span> () =&gt; &#123;</span><br><span class="line">  Promise.all([selectPizza(), selectDrink()]).then(<span class="name">orderItems</span>)<span class="comment">; // async call</span></span><br><span class="line">&#125;)()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>看来不要随意的<code>await</code>，它很可能让代码性能降低。</p>
+<h2 id="精读"><a href="#精读" class="headerlink" title="精读"></a>精读</h2><p>仔细思考为什么<code>async/await</code>会被滥用，个人认为是它的功能比较反直觉导致的。</p>
+<p>首先<code>async/await</code>真的是语法糖，功能也仅是让代码写的舒服一些。先不看它的语法或者特性，仅从语法糖三个字，就能看出它一定是局限了某些能力。</p>
+<p>举个例子，利用<code>html</code>标签封装了一个组件，带来了便利性的同时，其功能一定是<code>html</code>的子集。又比如，某个轮子哥觉得某个组件<code>api</code>太复杂，于是基于它封装了一个语法糖，多半可以认为这个便捷性是牺牲了部分功能换来的。</p>
+<p>功能完整度与使用便利度一直是相互博弈的，很多框架思想的不同开源版本，几乎都是把功能完整度与便利度按照不同比例混合的结果。</p>
+<p>那么回到<code>async/await</code>它的解决的问题是回调地狱带来的灾难。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  b(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    c();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>为了减少嵌套结构太多对大脑造成的冲击，<code>async/await</code>决定这么写：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">await</span> <span class="selector-tag">a</span>();</span><br><span class="line"><span class="selector-tag">await</span> <span class="selector-tag">b</span>();</span><br><span class="line"><span class="selector-tag">await</span> <span class="selector-tag">c</span>();</span><br></pre></td></tr></table></figure>
+
+<p>虽然层级上一致了，但逻辑上还是嵌套关系，这不是另一个程度上增加了大脑负担吗？而且这个转换还是隐形的，所以许多时候倾向于忽略它，所以造成了语法糖的滥用。</p>
+<h2 id="理解语法糖"><a href="#理解语法糖" class="headerlink" title="理解语法糖"></a>理解语法糖</h2><p>虽然要正确理解<code>async/await</code>的真实效果比较反人类，但为了清爽的代码结构，以及防止写出低性能的代码，还是挺有必要认真理解<code>async/await</code>带来的改变。</p>
+<p>首先<code>async/await</code>只能实现一部分回调支持的功能，也就是仅能方便应对层层嵌套的场景。其他场景，就要动一些脑子了。比如两对回调。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  b();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">c(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  d();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如果写成下面的方式，虽然一定能保证功能一致，但变成了最低效的执行方式。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">await</span> <span class="selector-tag">a</span>();</span><br><span class="line"><span class="selector-tag">await</span> <span class="selector-tag">b</span>();</span><br><span class="line"><span class="selector-tag">await</span> <span class="selector-tag">c</span>();</span><br><span class="line"><span class="selector-tag">await</span> <span class="selector-tag">d</span>();</span><br></pre></td></tr></table></figure>
+
+<p>因为翻译成回调，就变成了。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  b(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    c(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      d();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>原始代码中，函数<code>c</code>可以与<code>a</code>同时执行，但<code>async/await</code>语法会倾向于在<code>b</code>执行完后，再执行<code>c</code>。</p>
+<p>可以优化一下性能。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const resA = a()<span class="comment">;</span></span><br><span class="line">const resC = c()<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">await resA<span class="comment">;</span></span><br><span class="line">b()<span class="comment">;</span></span><br><span class="line">await resC<span class="comment">;</span></span><br><span class="line">d()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>但其实这个逻辑也无法达到回调的效果，虽然<code>a</code>与<code>c</code>同时执行了，但<code>d</code>原本只要等待<code>c</code>执行完，现在如果<code>a</code>执行时间比<code>c</code>长，就变成了。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  d();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>看来只有完全隔离成两个函数。</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">async</span> () =&gt; &#123;</span><br><span class="line">  await a()<span class="comment">;</span></span><br><span class="line">  b()<span class="comment">;</span></span><br><span class="line">&#125;)()<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">(<span class="name">async</span> () =&gt; &#123;</span><br><span class="line">  await c()<span class="comment">;</span></span><br><span class="line">  d()<span class="comment">;</span></span><br><span class="line">&#125;)()<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>或者利用<code>Promise.all</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">ab</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">await</span> a();</span><br><span class="line">  b();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">cd</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">await</span> c();</span><br><span class="line">  d();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.all([ab(), cd()]);</span><br></pre></td></tr></table></figure>
+
+<p>这就是可怕之处。回调方式这么简单的过程式代码，换成<code>async/await</code>居然写完还要反思一下，再反推着去优化性能，这简直比回调地狱还要可怕。</p>
+<p>而且大部分场景代码是非常复杂的，同步与<code>await</code>混杂在一起，想捋清楚其中的脉络，并正确优化性能往往是很困难的。但是为什么要自己挖坑再填坑呢？很多时候还会导致忘了填。</p>
+<p>原文作者给出了<code>Promise.all</code>的方式简化逻辑，不要一昧追求<code>async/await</code>语法，在必要情况下适当使用回调，是可以增加代码可读性的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>async/await</code>回调地狱也不要过渡依赖新特性，否则可能带来的代码执行效率的下降，进而影响到用户体验。同时，也不要过渡利用新特性修复新特性带来的问题，这样反而导致代码可读性下降。</p>
+<p>翻开<code>redux</code>刚火起来那段时期的老代码，看到了许多过渡抽象、为了用而用的代码，硬是把两行代码能写完的逻辑，拆到了3个文件，分散在6行不同位置，只好用字符串搜索的方式查找线索，最后发现这个抽象代码整个项目仅用了一次。</p>
+<p>写出这种代码的可能性只有一个，就是在精神麻木的情况下，一口气喝完了<code>redux</code>提供的全部鸡汤。</p>
+<p>就像<code>async/await</code>地狱一样，看到这种<code>redux</code>代码，远不如所谓没跟上时代的老前端写出的<code>jquery</code>代码。</p>
+<p>决定代码质量的是思维，而非框架或语法，<code>async/await</code>虽好，但也要适度。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/04/this%E3%80%81apply%E3%80%81call%E3%80%81bind/" rel="prev" title="this、apply、call、bind">
+                  <i class="fa fa-chevron-left"></i> this、apply、call、bind
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/17/Vuex%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E7%AE%80%E4%BB%8B/" rel="next" title="Vuex从入门到放弃（1）——简介">
+                  Vuex从入门到放弃（1）——简介 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeptinary</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

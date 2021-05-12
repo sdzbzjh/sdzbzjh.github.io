@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;sdzbzjh.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="this的指向在ES5中，this的指向始终坚持一个原理：this永远指向最后调用它的那个对象。 12345678910var name &#x3D; &quot;windowsName&quot;;function a() &amp;#123;    var name &#x3D; &quot;Cherry&quot;;    console.log(this.name);          &#x2F;&#x2F; windowsName">
+<meta property="og:type" content="article">
+<meta property="og:title" content="this、apply、call、bind">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/06/04/this%E3%80%81apply%E3%80%81call%E3%80%81bind/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="this的指向在ES5中，this的指向始终坚持一个原理：this永远指向最后调用它的那个对象。 12345678910var name &#x3D; &quot;windowsName&quot;;function a() &amp;#123;    var name &#x3D; &quot;Cherry&quot;;    console.log(this.name);          &#x2F;&#x2F; windowsName">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-04T03:34:12.000Z">
+<meta property="article:modified_time" content="2021-05-12T07:15:59.737Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://sdzbzjh.github.io/2019/06/04/this%E3%80%81apply%E3%80%81call%E3%80%81bind/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;sdzbzjh.github.io&#x2F;2019&#x2F;06&#x2F;04&#x2F;this%E3%80%81apply%E3%80%81call%E3%80%81bind&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;06&#x2F;04&#x2F;this、apply、call、bind&#x2F;&quot;,&quot;title&quot;:&quot;this、apply、call、bind&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>this、apply、call、bind | Zeptinary的博客</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Zeptinary的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">若得我命皆由我，才能火里种金莲</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#this%E7%9A%84%E6%8C%87%E5%90%91"><span class="nav-number">1.</span> <span class="nav-text">this的指向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E5%8F%98this%E7%9A%84%E6%8C%87%E5%90%91"><span class="nav-number">2.</span> <span class="nav-text">改变this的指向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">箭头函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E4%BD%BF%E7%94%A8-this-this"><span class="nav-number">2.2.</span> <span class="nav-text">在函数内部使用_this &#x3D; this</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8apply%E3%80%81call%E3%80%81bind"><span class="nav-number">2.3.</span> <span class="nav-text">使用apply、call、bind</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8apply"><span class="nav-number">2.3.1.</span> <span class="nav-text">使用apply</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8call"><span class="nav-number">2.3.2.</span> <span class="nav-text">使用call</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8bind"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用bind</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apply%E3%80%81call%E3%80%81bind%E5%8C%BA%E5%88%AB"><span class="nav-number">2.4.</span> <span class="nav-text">apply、call、bind区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#apply%E5%92%8Ccall%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.5.</span> <span class="nav-text">apply和call的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bind%E5%92%8Capply%E3%80%81call%E5%8C%BA%E5%88%AB"><span class="nav-number">2.6.</span> <span class="nav-text">bind和apply、call区别</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zeptinary"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zeptinary</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sdzbzjh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sdzbzjh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:sdzbzjh@gmail.com" title="E-Mail → mailto:sdzbzjh@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sdzbzjh.github.io/2019/06/04/this%E3%80%81apply%E3%80%81call%E3%80%81bind/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zeptinary">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeptinary的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          this、apply、call、bind
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-04 11:34:12" itemprop="dateCreated datePublished" datetime="2019-06-04T11:34:12+08:00">2019-06-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-12 15:15:59" itemprop="dateModified" datetime="2021-05-12T15:15:59+08:00">2021-05-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="this的指向"><a href="#this的指向" class="headerlink" title="this的指向"></a>this的指向</h2><p>在ES5中，<code>this</code>的指向始终坚持一个原理：<code>this</code>永远指向最后调用它的那个对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">&quot;Cherry&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);          <span class="comment">// windowsName</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&quot;inner:&quot;</span> + <span class="built_in">this</span>);    <span class="comment">// inner: Window</span></span><br><span class="line">&#125;</span><br><span class="line">a();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&quot;outer:&quot;</span> + <span class="built_in">this</span>)         <span class="comment">// outer: Window</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么<code>log</code>的是<code>windowsName</code>，因为根据<code>this</code>指向的原理，最后调用<code>a</code>的地方，没有调用的对象那么就是全局对象<code>window</code>，这就相当于是<code>window.a()</code>。</p>
+<blockquote>
+<p>注意，这里我们没有使用严格模式，如果使用严格模式的话，全局对象就是<code>undefined</code>，那么就会报错<code>Uncaught TypeError: Cannot read property &#39;name&#39; of undefined</code>。</p>
+</blockquote>
+<span id="more"></span>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);      <span class="comment">// Cherry</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">a.fn();</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，函数<code>fn</code>是对象<code>a</code>调用的，所以打印的值就是<code>a</code>中的<code>name</code>的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);      <span class="comment">// Cherry</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.a.fn();</span><br></pre></td></tr></table></figure>
+
+<p>这里打印<code>Cherry</code>的原因是最后调用它的对象仍然是对象a。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="comment">// name: &quot;Cherry&quot;,</span></span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);      <span class="comment">// undefined</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.a.fn();</span><br></pre></td></tr></table></figure>
+
+<p>为什么会打印<code>undefined</code>呢？因为调用<code>fn</code>的是<code>a</code>对象，也就是说<code>fn</code>的内部的<code>this</code>是对象<code>a</code>，而对象<code>a</code>中并没有对<code>name</code>进行定义，所以<code>log</code>的<code>this.name</code>的值是<code>undefined</code>。</p>
+<p>因为最后调用<code>fn</code>的对象是<code>a</code>，所以就算<code>a</code>中没有<code>name</code>这个属性，也不会继续向上一个对象寻找<code>this.name</code>，而是直接输出<code>undefined</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="literal">null</span>,</span><br><span class="line">    <span class="comment">// name: &quot;Cherry&quot;,</span></span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);      <span class="comment">// windowsName</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> f = a.fn;</span><br><span class="line">f();</span><br></pre></td></tr></table></figure>
+
+<p>为什么不是<code>null</code>呢？这是因为虽然将<code>a</code>对象的<code>fn</code>方法赋值给变量<code>f</code>了，但是没有调用，<code>fn()</code>最后仍然是被<code>window</code>调用的。所以<code>this</code>指向的也就是<code>window</code>。</p>
+<p><code>this</code>的指向并不是在创建的时候就可以确定的。在ES5中，this永远指向最后调用它的那个对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">&#x27;Cherry&#x27;</span>;</span><br><span class="line">    innerFunction();</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">innerFunction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);      <span class="comment">// windowsName</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn();</span><br></pre></td></tr></table></figure>
+
+<h2 id="改变this的指向"><a href="#改变this的指向" class="headerlink" title="改变this的指向"></a>改变this的指向</h2><p>改变this的指向我总结有以下几种方法：</p>
+<ul>
+<li>使用ES6的箭头函数。</li>
+<li>在函数内部使用<code>_this = this</code>。</li>
+<li>使用<code>apply</code>、<code>call</code>、<code>bind</code>。</li>
+<li><code>new</code>实例化一个对象。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)     </span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(  <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">this</span>.func1()</span><br><span class="line">        &#125;,<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">a.func2()     <span class="comment">// this.func1 is not a function</span></span><br></pre></td></tr></table></figure>
+
+<p>在不使用箭头函数的情况下会报错，因为最后调用<code>setTimeout</code>的对象是<code>window</code>，但是在<code>window</code>中并没有<code>func1</code>函数。</p>
+<p>在改变<code>this</code>指向这一节将把这个例子作为demo进行改造。</p>
+<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><p>箭头函数的<code>this</code>始终指向函数定义时的<code>this</code>，而非执行时。</p>
+<p>箭头函数中没有<code>this</code>绑定，必须通过查找作用域链来决定其值，如果箭头函数被非箭头函数包含，则<code>this</code>绑定的是最近一层非箭头函数的<code>this</code>，否则，<code>this</code>为<code>undefined</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)     </span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>( <span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.func1()</span><br><span class="line">        &#125;,<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">a.func2()     <span class="comment">// Cherry</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="在函数内部使用-this-this"><a href="#在函数内部使用-this-this" class="headerlink" title="在函数内部使用_this = this"></a>在函数内部使用_this = this</h3><p>不使用箭头函数的话，这种方式是最简单的避免出错的方式，先将调用这个函数的对象保存在变量<code>_this</code>中，在函数中都使用这个<code>_this</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;windowsName&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line"></span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)     </span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> _this = <span class="built_in">this</span>;</span><br><span class="line">        <span class="built_in">setTimeout</span>( <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            _this.func1()</span><br><span class="line">        &#125;,<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">a.func2()       <span class="comment">// Cherry</span></span><br></pre></td></tr></table></figure>
+
+<p>在<code>func2</code>中，声明<code>var _this = this</code>，这里的<code>this</code>是调用<code>func2</code>的对象<code>a</code>，为了防止在<code>func2</code>中的<code>setTimeout</code>被<code>window</code>调用而导致的在<code>setTimeout</code>中的<code>this</code>为<code>window</code>。我们将<code>this</code>(指向变量<code>a</code>)赋值给一个变量<code>_this</code>，这样，在<code>func2</code>中我们使用<code>_this</code>就是指向对象<code>a</code>了。</p>
+<h3 id="使用apply、call、bind"><a href="#使用apply、call、bind" class="headerlink" title="使用apply、call、bind"></a>使用apply、call、bind</h3><p>使用<code>apply</code>、<code>call</code>、<code>bind</code>函数也是可以改变<code>this</code>的指向的。</p>
+<h4 id="使用apply"><a href="#使用apply" class="headerlink" title="使用apply"></a>使用apply</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(  <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">this</span>.func1()</span><br><span class="line">        &#125;.apply(a),<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">a.func2()            <span class="comment">// Cherry复制代码使用 call</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用call"><a href="#使用call" class="headerlink" title="使用call"></a>使用call</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(  <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">this</span>.func1()</span><br><span class="line">        &#125;.call(a),<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">a.func2()            <span class="comment">// Cherry复制代码使用 bind</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用bind"><a href="#使用bind" class="headerlink" title="使用bind"></a>使用bind</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func1</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="attr">func2</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(  <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">this</span>.func1()</span><br><span class="line">        &#125;.bind(a)(),<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">a.func2()            <span class="comment">// Cherry</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="apply、call、bind区别"><a href="#apply、call、bind区别" class="headerlink" title="apply、call、bind区别"></a>apply、call、bind区别</h3><p>刚刚我们已经介绍了<code>apply</code>、<code>call</code>、<code>bind</code>都是可以改变<code>this</code>的指向的，但是这三个函数稍有不同。</p>
+<p><code>apply()</code>方法调用一个函数, 其具有一个指定的<code>this</code>值，以及作为一个数组（或类似数组的对象）提供的参数。</p>
+<p><code>fun.apply(thisArg, [argsArray])</code></p>
+<p>thisArg在<code>fun</code>函数运行时指定的<code>this</code>值。需要注意的是，指定的<code>this</code>值并不一定是该函数执行时真正的<code>this</code>值，如果这个函数处于非严格模式下，则指定为<code>null</code>或<code>undefined</code>时会自动指向全局对象（浏览器中就是<code>window</code>对象），同时值为原始值（数字，字符串，布尔值）的<code>this</code>会指向该原始值的自动包装对象。</p>
+<p>argsArray是一个数组或者类数组对象，其中的数组元素将作为单独的参数传给<code>fun</code>函数。如果该参数的值为<code>null</code>或<code>undefined</code>，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象。</p>
+<h3 id="apply和call的区别"><a href="#apply和call的区别" class="headerlink" title="apply和call的区别"></a>apply和call的区别</h3><p><code>apply</code>和<code>call</code>基本类似，他们的区别只是传入的参数不同。</p>
+<p><code>fun.call(thisArg[, arg1[, arg2[, ...]]])</code></p>
+<p>所以<code>apply</code>和<code>call</code>的区别是<code>call</code>方法接受的是若干个参数列表，而<code>apply</code>接收的是一个包含多个参数的数组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a =&#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log( a + b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = a.fn;</span><br><span class="line">b.apply(a,[<span class="number">1</span>,<span class="number">2</span>])     <span class="comment">// 3复制代码例 14：</span></span><br><span class="line"><span class="keyword">var</span> a =&#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log( a + b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = a.fn;</span><br><span class="line">b.call(a,<span class="number">1</span>,<span class="number">2</span>)       <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="bind和apply、call区别"><a href="#bind和apply、call区别" class="headerlink" title="bind和apply、call区别"></a>bind和apply、call区别</h3><p>我们先来将刚刚的例子使用<code>bind</code>试一下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a =&#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log( a + b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = a.fn;</span><br><span class="line">b.bind(a,<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>bind()</code>方法创建一个新的函数, 当被调用时，将其<code>this</code>关键字设置为提供的值，在调用新函数时，在任何提供之前提供一个给定的参数序列。</p>
+<p><code>bind</code>是创建一个新的函数，必须要手动去调用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a =&#123;</span><br><span class="line">    <span class="attr">name</span> : <span class="string">&quot;Cherry&quot;</span>,</span><br><span class="line">    <span class="attr">fn</span> : <span class="function"><span class="keyword">function</span> (<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log( a + b)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = a.fn;</span><br><span class="line">b.bind(a,<span class="number">1</span>,<span class="number">2</span>)()           <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/04/BFC-Block-Formatting-Context/" rel="prev" title="BFC (Block Formatting Context)">
+                  <i class="fa fa-chevron-left"></i> BFC (Block Formatting Context)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/17/%E7%B2%BE%E8%AF%BB%E3%80%8Aasync-await-%E6%98%AF%E6%8A%8A%E5%8F%8C%E5%88%83%E5%89%91%E3%80%8B/" rel="next" title="精读《async/await 是把双刃剑》">
+                  精读《async/await 是把双刃剑》 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeptinary</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

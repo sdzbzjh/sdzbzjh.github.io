@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;sdzbzjh.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="大部分编程语言的符号是大小写敏感（case sensitive）的，少数（如Basic）是大小写不敏感（case insensitive）的。然而PHP两种都不是。 PHP的函数、方法以及关键字是大小写不敏感的，而变量、常量都是大小写敏感的。至于类，又是大小写不敏感的了。 WTF！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP从入门到出家（1）——奇葩的大小写规则">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="大部分编程语言的符号是大小写敏感（case sensitive）的，少数（如Basic）是大小写不敏感（case insensitive）的。然而PHP两种都不是。 PHP的函数、方法以及关键字是大小写不敏感的，而变量、常量都是大小写敏感的。至于类，又是大小写不敏感的了。 WTF！">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-29T07:18:21.000Z">
+<meta property="article:modified_time" content="2021-05-12T07:17:00.729Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;sdzbzjh.github.io&#x2F;2019&#x2F;05&#x2F;29&#x2F;PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;05&#x2F;29&#x2F;PHP从入门到出家（1）——奇葩的大小写规则&#x2F;&quot;,&quot;title&quot;:&quot;PHP从入门到出家（1）——奇葩的大小写规则&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>PHP从入门到出家（1）——奇葩的大小写规则 | Zeptinary的博客</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Zeptinary的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">若得我命皆由我，才能火里种金莲</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zeptinary"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zeptinary</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sdzbzjh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sdzbzjh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:sdzbzjh@gmail.com" title="E-Mail → mailto:sdzbzjh@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zeptinary">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeptinary的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PHP从入门到出家（1）——奇葩的大小写规则
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-29 15:18:21" itemprop="dateCreated datePublished" datetime="2019-05-29T15:18:21+08:00">2019-05-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-12 15:17:00" itemprop="dateModified" datetime="2021-05-12T15:17:00+08:00">2021-05-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%90%E6%A7%BDPHP/" itemprop="url" rel="index"><span itemprop="name">吐槽PHP</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>大部分编程语言的符号是大小写敏感（<code>case sensitive</code>）的，少数（如Basic）是大小写不敏感（<code>case insensitive</code>）的。然而PHP两种都不是。</p>
+<p>PHP的函数、方法以及关键字是大小写不敏感的，而变量、常量都是大小写敏感的。至于类，又是大小写不敏感的了。</p>
+<p>WTF！</p>
+<span id="more"></span>
+
+<p>如果以大小写不一致的方式使用<code>classloader</code>，则在路径是大小写敏感的类UNIX环境下，就很容易产生问题。</p>
+<p>尽管PHP大小写规则奇葩，但是PHP程序员并不在乎这个问题，绝大多数人还是遵循使用和<code>manual</code>规则一致的大小写的代码风格。</p>
+<p>这导致一些很不友善的<code>API</code>命名，比如<code>htmlspecialchars</code>。</p>
+<p>为什么不是<code>html_special_chars</code>或<code>htmlSpecialChars</code>？</p>
+<p>了解函数是大小写不敏感后，我们就知道事实上<code>htmlSpecialChars</code>是可行的。实际上最初这个函数（在PHP2的文档中）就是以<code>CamelCase</code>方式命名的（<code>HtmlSpecialChars</code>）。但不知是出于什么原因，（或许是出于“统一”大小写风格？）PHP3开始，文档中所有函数全部小写了。</p>
+<p>但是最初为什么函数被设计为大小写不敏感的？</p>
+<blockquote>
+<p>PHP之父Rasmus在一个访谈中说：“…I then wrote a very simple parser that would pick tags out of HTML files and replace them with the output of the corresponding functions in the C library… The simple parser slowly grew to include conditional tags, then loop tags, functions, etc. At no point did I think I was writing a scripting language. I was simply adding a little bit of functionality to the macro replacement parser. I was still writing all my real business logic in C.”</p>
+</blockquote>
+<p>其实最初的PHP也许比今天更接近一个模板引擎！早期<code>PHP</code>就是宏替换（<code>macro replacement</code>），不负责业务逻辑。</p>
+<p>宏替换就是将<code>HTML</code>中的某些标签替换为C写的对应函数的输出。所以这个访谈里说，因为<code>HTML</code>的标签是大小写不敏感的的，所以在查找对应函数时，就按照大小写不敏感的方式了。后来的PHP发展的已经完全不同，但函数名就一直大小写不敏感了。</p>
+<p>实际上不仅函数，那些早期就有的结构，比如<code>if</code>、<code>for</code>之类的关键字，还有<code>echo</code>、<code>list</code>之类并非是函数的特殊指令，也都是大小写不敏感的。</p>
+<p>我们应该反过来问，为何在语言大部分元素都是大小写不敏感的情况下，变量名却是大小写敏感的？</p>
+<p>下面我们讨论下<code>class</code> 。<code>class</code>的属性和常量是大小写敏感的，方法是大小写不敏感的。这样和普通变量、常量、函数的大小写情况正好是一致的。难道这么设计是为了一致性？</p>
+<p>问题是类名本身为什么是大小写不敏感的？从直觉上说，类名难道不是更接近常量？</p>
+<p>这是因为PHP的<code>class</code>一开始其构造器并非现在的<code>__construct</code>，而是和class同名的方法。因为方法是大小写不敏感的，所以class名也就是大小写不敏感的。多么天才的设计！</p>
+<p>好了，现在是不是觉得自己可以很自豪的说，终于搞清楚PHP中各种大小写规则了！Naive！</p>
+<p>PHP有<code>goto</code>语句，跳转到指定的标记。<code>goto</code>作为关键字，肯定是大小写不敏感的。可是标记是敏感的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/27/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%885%EF%BC%89%E2%80%94%E2%80%94%E8%BF%90%E7%AE%97%E7%AC%A6/" rel="prev" title="ES6从入门到放弃（5）——运算符">
+                  <i class="fa fa-chevron-left"></i> ES6从入门到放弃（5）——运算符
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/" rel="next" title="PHP从入门到出家（2）——混乱的函数命名">
+                  PHP从入门到出家（2）——混乱的函数命名 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeptinary</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

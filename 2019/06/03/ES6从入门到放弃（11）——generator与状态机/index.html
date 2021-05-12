@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;sdzbzjh.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="定义一个对象在其内部状态改变时改变它的行为，这个对象看起来就像改变了它的类一样。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6从入门到放弃（11）——generator与状态机">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/06/03/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%8811%EF%BC%89%E2%80%94%E2%80%94generator%E4%B8%8E%E7%8A%B6%E6%80%81%E6%9C%BA/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="定义一个对象在其内部状态改变时改变它的行为，这个对象看起来就像改变了它的类一样。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-06-03T09:44:39.000Z">
+<meta property="article:modified_time" content="2021-05-12T07:18:17.365Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://sdzbzjh.github.io/2019/06/03/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%8811%EF%BC%89%E2%80%94%E2%80%94generator%E4%B8%8E%E7%8A%B6%E6%80%81%E6%9C%BA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;sdzbzjh.github.io&#x2F;2019&#x2F;06&#x2F;03&#x2F;ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%8811%EF%BC%89%E2%80%94%E2%80%94generator%E4%B8%8E%E7%8A%B6%E6%80%81%E6%9C%BA&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;06&#x2F;03&#x2F;ES6从入门到放弃（11）——generator与状态机&#x2F;&quot;,&quot;title&quot;:&quot;ES6从入门到放弃（11）——generator与状态机&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>ES6从入门到放弃（11）——generator与状态机 | Zeptinary的博客</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Zeptinary的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">若得我命皆由我，才能火里种金莲</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BE%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generator"><span class="nav-number">3.</span> <span class="nav-text">generator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react%E7%9A%84%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">react的状态管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.1.</span> <span class="nav-text">状态模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zeptinary"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zeptinary</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sdzbzjh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sdzbzjh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:sdzbzjh@gmail.com" title="E-Mail → mailto:sdzbzjh@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sdzbzjh.github.io/2019/06/03/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%8811%EF%BC%89%E2%80%94%E2%80%94generator%E4%B8%8E%E7%8A%B6%E6%80%81%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zeptinary">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeptinary的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ES6从入门到放弃（11）——generator与状态机
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-03 17:44:39" itemprop="dateCreated datePublished" datetime="2019-06-03T17:44:39+08:00">2019-06-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-12 15:18:17" itemprop="dateModified" datetime="2021-05-12T15:18:17+08:00">2021-05-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ECMAScript-6/" itemprop="url" rel="index"><span itemprop="name">ECMAScript 6</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>一个对象在其内部状态改变时改变它的行为，这个对象看起来就像改变了它的类一样。</p>
+<span id="more"></span>
+
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p>比如一个洗衣机，点击电源按钮，如果是洗衣机是开启的状态，当你点击它会发出关闭的信号，如果你是关闭状态,则会发出开启的信号。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var switches = (function()&#123;</span><br><span class="line">    var <span class="keyword">state</span> = <span class="string">&quot;off&quot;</span>;</span><br><span class="line">    return function()&#123;</span><br><span class="line">        if(<span class="keyword">state</span> === <span class="string">&quot;off&quot;</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>(<span class="string">&quot;打开洗衣机&quot;</span>);</span><br><span class="line">            <span class="keyword">state</span> = <span class="string">&quot;on&quot;</span>;</span><br><span class="line">        &#125;else if(<span class="keyword">state</span> === <span class="string">&quot;on&quot;</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>(<span class="string">&quot;关闭洗衣机&quot;</span>);</span><br><span class="line">            <span class="keyword">state</span> = <span class="string">&quot;off&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line">//按下开关按钮</span><br><span class="line">oBtn.onclick = function()&#123;</span><br><span class="line">    switches();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>一个匿名函数自执行，加一个变量，这就是一个状态机。</p>
+<p>但是作为一个有追求的洗衣机，得能够针对不同的洗衣机选择的不同的程序，程序里面有很多的洗涤方式，比如智能、标准、快速、强力，轻柔等等。我们丰富一下我们的面板。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">var switches = (function()&#123;  </span><br><span class="line">    var <span class="keyword">state</span> = <span class="string">&quot;智能&quot;</span>;</span><br><span class="line">    return function()&#123;</span><br><span class="line">        if(<span class="keyword">state</span> === <span class="string">&quot;智能&quot;</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>(<span class="string">&quot;智能洗衣模式&quot;</span>);</span><br><span class="line">            <span class="keyword">state</span> = <span class="string">&quot;标准&quot;</span>;</span><br><span class="line">        &#125;else if(<span class="keyword">state</span> === <span class="string">&quot;标准&quot;</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>(<span class="string">&quot;标准洗衣模式&quot;</span>);</span><br><span class="line">            <span class="keyword">state</span> = <span class="string">&quot;快速&quot;</span>;</span><br><span class="line">        &#125;else if(<span class="keyword">state</span> === <span class="string">&quot;快速&quot;</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>(<span class="string">&quot;快速洗衣模式&quot;</span>);</span><br><span class="line">            <span class="keyword">state</span> = <span class="string">&quot;强力&quot;</span>;</span><br><span class="line">        &#125;else if(<span class="keyword">state</span> === <span class="string">&quot;强力&quot;</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>(<span class="string">&quot;强力洗衣模式&quot;</span>);</span><br><span class="line">            <span class="keyword">state</span> = <span class="string">&quot;轻柔&quot;</span>;</span><br><span class="line">        &#125;else if(<span class="keyword">state</span> === <span class="string">&quot;轻柔&quot;</span>)&#123;</span><br><span class="line">            console.<span class="keyword">log</span>(<span class="string">&quot;轻柔洗衣模式&quot;</span>);</span><br><span class="line">            <span class="keyword">state</span> = <span class="string">&quot;智能&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line">//按下程序按钮</span><br><span class="line">oBtn.onclick = function()&#123;</span><br><span class="line">    switches();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>看起来没问题，但是一旦洗衣模式很多，if写法会被写死，<code>switch</code>方式也很不好。</p>
+<p>洗衣机其实就是一个状态对应一个行为，一个对象在其内部状态改变时改变它的行为，这个对象看起来就像改变了它的类一样。</p>
+<p>这句话可以这么理解，洗衣机如果本来是浸泡状态，当把它改成脱水状态，洗衣机从最开始的浸泡衣服变成甩干衣服，看起来就好像洗衣机从一个浸泡机器变成了甩干机器一样。</p>
+<p>换成这种思路理解，就可以不用判断了，只要记住状态改变，行为改变就行了。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">        <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="comment">//定义状态</span></span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Zhineng = <span class="function"><span class="keyword">function</span>(<span class="params">button</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn = button;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Zhineng.prototype.press= <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&#x27;智能模式&#x27;</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn.setState(<span class="string">&quot;Biaozhun&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Biaozhun = <span class="function"><span class="keyword">function</span>(<span class="params">button</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn = button;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Biaozhun.prototype.press= <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&#x27;标准模式&#x27;</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn.setState(<span class="string">&quot;Kuaisu&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Kuaisu = <span class="function"><span class="keyword">function</span>(<span class="params">button</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn = button;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Kuaisu.prototype.press= <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&#x27;快速模式&#x27;</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn.setState(<span class="string">&quot;Qiangli&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Qiangli = <span class="function"><span class="keyword">function</span>(<span class="params">button</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn = button;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Qiangli.prototype.press= <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&#x27;强力模式&#x27;</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn.setState(<span class="string">&quot;Qingrou&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Qingrou = <span class="function"><span class="keyword">function</span>(<span class="params">button</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn = button;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Qingrou.prototype.press= <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&#x27;轻柔模式&#x27;</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.turn.setState(<span class="string">&quot;Zhineng&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="comment">//定义洗衣机洗衣程序</span></span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Washer = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.Zhineng = <span class="keyword">new</span> Zhineng(<span class="built_in">this</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.Biaozhun = <span class="keyword">new</span> Biaozhun(<span class="built_in">this</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.Kuaisu = <span class="keyword">new</span> Kuaisu(<span class="built_in">this</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.Qiangli = <span class="keyword">new</span> Qiangli(<span class="built_in">this</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.Qingrou = <span class="keyword">new</span> Qingrou(<span class="built_in">this</span>);</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.state = <span class="string">&quot;Zhineng&quot;</span>;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Washer.prototype.setState = <span class="function"><span class="keyword">function</span>(<span class="params">state</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>.state=state;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Washer.prototype.press = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">this</span>[<span class="built_in">this</span>.state].press();  <span class="comment">//执行对应状态的press</span></span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            Washer.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  <span class="comment">//定义执行者</span></span></span><br><span class="line"><span class="javascript">                <span class="built_in">document</span>.querySelector(<span class="string">&#x27;#btn&#x27;</span>).addEventListener(<span class="string">&quot;click&quot;</span>,<span class="function">()=&gt;</span>&#123;</span></span><br><span class="line"><span class="javascript">                    <span class="built_in">this</span>.press();</span></span><br><span class="line"><span class="javascript">                &#125;,<span class="literal">false</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> w = <span class="keyword">new</span> Washer();</span></span><br><span class="line"><span class="javascript">            w.init();  <span class="comment">//初始化</span></span></span><br><span class="line"><span class="javascript">            w.state = <span class="string">&quot;Qiangli&quot;</span>;</span></span><br><span class="line"><span class="javascript">        &#125;;</span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;按下&quot;</span> <span class="attr">id</span>=<span class="string">&quot;btn&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就去掉了if判断，我们想要什么模式，只需要通过改变对应的状态就好了。但是大量重复代码太难受。<br>针对这样的情况，ES6中推出了<code>generator</code>这个伪函数，能够帮助我们快速实现状态化。</p>
+<h2 id="generator"><a href="#generator" class="headerlink" title="generator"></a>generator</h2><p>用<code>generator</code>优化一下我们上面的代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">        <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="comment">//这里一堆变量，其实我们可以用一个对象，但是我们不搞那么复杂</span></span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Zhineng = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&quot;智能模式&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Biaozhun = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&quot;标准模式&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Kuaisu = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&quot;快速模式&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Qiangli = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&quot;强力模式&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> Qingrou = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="built_in">console</span>.log(<span class="string">&quot;轻柔模式&quot;</span>);</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="function"><span class="keyword">function</span>* <span class="title">models</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, fn, len = <span class="built_in">arguments</span>.length; fn = <span class="built_in">arguments</span>[i++];) &#123;</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">yield</span> fn();</span></span><br><span class="line"><span class="javascript">                    <span class="keyword">if</span> (i === len) &#123;</span></span><br><span class="line"><span class="javascript">                        i = <span class="number">0</span>;</span></span><br><span class="line"><span class="javascript">                    &#125;</span></span><br><span class="line"><span class="javascript">                &#125;</span></span><br><span class="line"><span class="javascript">            &#125;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> exe = models(Zhineng,Biaozhun,Kuaisu,Qiangli, Qingrou);  <span class="comment">//按照模式顺序排放</span></span></span><br><span class="line"><span class="javascript">            <span class="built_in">document</span>.querySelector(<span class="string">&quot;#btn&quot;</span>).addEventListener(<span class="string">&quot;click&quot;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                exe.next();</span></span><br><span class="line"><span class="javascript">            &#125;, <span class="literal">false</span>);</span></span><br><span class="line"><span class="javascript">        &#125;; </span></span><br><span class="line"><span class="javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">value</span>=<span class="string">&quot;按下&quot;</span> <span class="attr">id</span>=<span class="string">&quot;btn&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>generator</code>函数是一个普通函数，但是有三个特征：</p>
+<ol>
+<li><code>function</code>关键字与函数名之间有一个星号。</li>
+<li>函数体内部使用<code>yield</code>表达式，定义不同的内部状态。</li>
+<li>遍历器对象的<code>next</code>方法，使得指针移向下一个状态。</li>
+</ol>
+<p><code>generator</code>就是让函数排队一个一个去执行了。</p>
+<h2 id="react的状态管理"><a href="#react的状态管理" class="headerlink" title="react的状态管理"></a>react的状态管理</h2><p>开发组件需要切换组件的状态时，如果每种状态有不同的处理方式，就可以使用状态模式进行开发。</p>
+<h3 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> States = &#123;</span><br><span class="line">    <span class="string">&quot;show&quot;</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;banner展现状态，点击关闭&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.setState(&#123;</span><br><span class="line">            <span class="attr">currentState</span>: <span class="string">&quot;hide&quot;</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;hide&quot;</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;banner关闭状态，点击展现&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.setState(&#123;</span><br><span class="line">            <span class="attr">currentState</span>: <span class="string">&quot;show&quot;</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>通过一个对象<code>States</code>来定义<code>banner</code>的状态，有<code>show</code>和<code>hide</code>两种状态，分别拥有相应的处理方法，调用后再分别把当前<code>banner</code>改写为另外一种状态。</p>
+<p>来看导航类<code>Banner</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> States = &#123;</span><br><span class="line">    <span class="string">&quot;show&quot;</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;banner展现状态，点击关闭&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.setState(&#123;</span><br><span class="line">            <span class="attr">currentState</span>: <span class="string">&quot;hide&quot;</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;hide&quot;</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;banner关闭状态，点击展现&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.setState(&#123;</span><br><span class="line">            <span class="attr">currentState</span>: <span class="string">&quot;show&quot;</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//上面代码不该出现在这只是为了说明问题</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Banner</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(props);</span><br><span class="line">        <span class="built_in">this</span>.state = &#123;</span><br><span class="line">            <span class="attr">currentState</span>: <span class="string">&quot;hide&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.toggle = <span class="built_in">this</span>.toggle.bind(<span class="built_in">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">toggle</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> s = <span class="built_in">this</span>.state.currentState;</span><br><span class="line">        States[s] &amp;&amp; States[s].apply(<span class="built_in">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; currentState &#125; = <span class="built_in">this</span>.state;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;banner&quot;</span> <span class="attr">onClick</span>=<span class="string">&#123;this.toggle&#125;</span>&gt;</span></span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Banner;</span><br></pre></td></tr></table></figure>
+
+<p>其实<code>react</code>就是有很多种洗衣状态但是一定能数出来多少种洗衣模式的洗衣机，我们每一次的操作都是在按洗衣机的按钮。上面的代码只不过是再开关洗衣机而已。</p>
+<p>不用纠结为什么这么做就能够进行状态管理。用洗衣机强力模式的时候，考虑过洗衣机桶和马达怎么运作的吗？只要知道按下哪个按钮能洗干净衣服，大体上知道洗衣机里面是通过马达带动衣服和滚筒之间摩擦清除污渍就够了。同理，只要知道改变状态能够实现要的功能，大体上的原理就是状态机就可以了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>状态机模式的使用场景是复杂多状态的管理。</li>
+<li>generaor的使用有利于代码简化。</li>
+<li>react的状态管理重在应用。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/03/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%8810%EF%BC%89%E2%80%94%E2%80%94Proxy%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%8A%AB%E6%8C%81/" rel="prev" title="ES6从入门到放弃（10）——Proxy与数据劫持">
+                  <i class="fa fa-chevron-left"></i> ES6从入门到放弃（10）——Proxy与数据劫持
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/04/BFC-Block-Formatting-Context/" rel="next" title="BFC (Block Formatting Context)">
+                  BFC (Block Formatting Context) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeptinary</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

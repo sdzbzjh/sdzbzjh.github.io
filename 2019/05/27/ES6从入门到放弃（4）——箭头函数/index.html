@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;sdzbzjh.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;}}</script>
+<meta name="description" content="简介ES6标准新增了一种新的函数：Arrow Function（箭头函数），也称“胖箭头函数”，允许使用“箭头”&#x3D;&gt;定义函数，是一种简写的函数表达式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6从入门到放弃（4）——箭头函数">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/05/27/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="简介ES6标准新增了一种新的函数：Arrow Function（箭头函数），也称“胖箭头函数”，允许使用“箭头”&#x3D;&gt;定义函数，是一种简写的函数表达式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-27T02:41:00.000Z">
+<meta property="article:modified_time" content="2021-05-12T07:17:33.423Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://sdzbzjh.github.io/2019/05/27/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;sdzbzjh.github.io&#x2F;2019&#x2F;05&#x2F;27&#x2F;ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;05&#x2F;27&#x2F;ES6从入门到放弃（4）——箭头函数&#x2F;&quot;,&quot;title&quot;:&quot;ES6从入门到放弃（4）——箭头函数&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>ES6从入门到放弃（4）——箭头函数 | Zeptinary的博客</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Zeptinary的博客</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">若得我命皆由我，才能火里种金莲</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%85%E8%A6%81%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">必要性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">3.1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ES5"><span class="nav-number">3.1.1.</span> <span class="nav-text">ES5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ES6"><span class="nav-number">3.1.2.</span> <span class="nav-text">ES6</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ES5-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">ES5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ES5-2"><span class="nav-number">3.2.2.</span> <span class="nav-text">ES5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ES6-1"><span class="nav-number">3.2.3.</span> <span class="nav-text">ES6</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.3.</span> <span class="nav-text">主要使用模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this"><span class="nav-number">4.</span> <span class="nav-text">this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%80%A7"><span class="nav-number">5.</span> <span class="nav-text">特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89arguments"><span class="nav-number">5.1.</span> <span class="nav-text">没有arguments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8new"><span class="nav-number">5.2.</span> <span class="nav-text">不能使用new</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%8F%98%E9%87%8F%E8%A7%A3%E6%9E%84%E7%BB%93%E5%90%88"><span class="nav-number">5.3.</span> <span class="nav-text">与变量解构结合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89%E5%8E%9F%E5%9E%8B%E5%B1%9E%E6%80%A7"><span class="nav-number">5.4.</span> <span class="nav-text">没有原型属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%83%BD%E6%8D%A2%E8%A1%8C"><span class="nav-number">5.5.</span> <span class="nav-text">不能换行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">6.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E5%87%BD%E6%95%B0%E4%B8%8A%E4%B8%8B%E6%96%87%E9%97%AE%E9%A2%98"><span class="nav-number">6.1.</span> <span class="nav-text">解决函数上下文问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="nav-number">6.2.</span> <span class="nav-text">简化回调函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E5%B8%B8%E5%87%BD%E6%95%B0"><span class="nav-number">6.2.1.</span> <span class="nav-text">正常函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-number">6.2.2.</span> <span class="nav-text">箭头函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E5%87%BD%E6%95%B0"><span class="nav-number">6.3.</span> <span class="nav-text">事件监听函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">7.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">7.2.</span> <span class="nav-text">使用场景</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zeptinary"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Zeptinary</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sdzbzjh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sdzbzjh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:sdzbzjh@gmail.com" title="E-Mail → mailto:sdzbzjh@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://sdzbzjh.github.io/2019/05/27/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Zeptinary">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeptinary的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ES6从入门到放弃（4）——箭头函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-27 10:41:00" itemprop="dateCreated datePublished" datetime="2019-05-27T10:41:00+08:00">2019-05-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-12 15:17:33" itemprop="dateModified" datetime="2021-05-12T15:17:33+08:00">2021-05-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ECMAScript-6/" itemprop="url" rel="index"><span itemprop="name">ECMAScript 6</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>ES6标准新增了一种新的函数：Arrow Function（箭头函数），也称“胖箭头函数”，允许使用“箭头”<code>=&gt;</code>定义函数，是一种简写的函数表达式。</p>
+<span id="more"></span>
+
+<h2 id="必要性"><a href="#必要性" class="headerlink" title="必要性"></a>必要性</h2><p>传统的JavaScript函数语法不灵活，每次需要定义函数时，都必须输入<code>function () &#123;&#125;</code>,这至少会出现两个问题：</p>
+<ol>
+<li>代码输入快了容易输错成<code>funciton</code>或者<code>functoin</code>或者其它，<code>=&gt;</code>不容易出错</li>
+<li>节省大量代码</li>
+</ol>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><h4 id="ES5"><a href="#ES5" class="headerlink" title="ES5"></a>ES5</h4><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">addFive</span>(num)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="type">num+5</span>;  </span><br><span class="line">&#125;</span><br><span class="line">alert(addFive(<span class="number">10</span>));</span><br></pre></td></tr></table></figure>
+
+<h4 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> addFive = <span class="built_in">num</span>=&gt;<span class="built_in">num</span>+<span class="number">5</span>;</span><br><span class="line">alert(addFive(<span class="number">5</span>));</span><br></pre></td></tr></table></figure>
+
+<p>没有<code>function</code>、没有<code>return</code>,没有<code>()</code>，没有<code>&#123;&#125;</code>,代码干净、简洁。</p>
+<p>使用箭头函数不仅能够避免错误，还能精简代码。由于积累效应，每一部分少一点合起来就多了，能节省代码和大幅提高工作效率的场景。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><h4 id="ES5-1"><a href="#ES5-1" class="headerlink" title="ES5"></a>ES5</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用箭头函数，可以分两步实现同样的函数功能。</p>
+<ol>
+<li>使用<code>=&gt;</code>来替代关键词<code>function</code>。</li>
+</ol>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum = <span class="function">(<span class="params">x, y</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>函数体只有一条返回语句时，可以省略括号<code>&#123;&#125;</code>和<code>return</code>关键词。</li>
+</ol>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum = <span class="function">(<span class="params">x, y</span>) =&gt;</span> x + y</span><br></pre></td></tr></table></figure>
+
+<p>如果只有一个参数时，<code>()</code>可省略。这是箭头函数最简洁的形式，常用于作用简单的处理函数</p>
+<h4 id="ES5-2"><a href="#ES5-2" class="headerlink" title="ES5"></a>ES5</h4><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var<span class="built_in"> array </span>= [&#x27;1&#x27;, &#x27;2345&#x27;, &#x27;567&#x27;, &#x27;89&#x27;];<span class="built_in"></span></span><br><span class="line"><span class="built_in">array </span>= array.filter(function (item) &#123;</span><br><span class="line">   <span class="built_in"> return </span>item.length &gt; 2;</span><br><span class="line">&#125;);</span><br><span class="line">// [<span class="string">&quot;2345&quot;</span>, <span class="string">&quot;567&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="ES6-1"><a href="#ES6-1" class="headerlink" title="ES6"></a>ES6</h4><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let<span class="built_in"> array </span>= [&#x27;1&#x27;, &#x27;2345&#x27;, &#x27;567&#x27;, &#x27;89&#x27;];<span class="built_in"></span></span><br><span class="line"><span class="built_in">array </span>= array.filter(item =&gt; item.length &gt; 2); </span><br><span class="line">// [<span class="string">&quot;2345&quot;</span>, <span class="string">&quot;567&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="主要使用模式"><a href="#主要使用模式" class="headerlink" title="主要使用模式"></a>主要使用模式</h3><ol>
+<li>一个参数对应一个表达式。</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">param</span> =&gt; expression<span class="comment">;// 例如 x =&gt; x+2;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>多个参数对应一个表达式。</li>
+</ol>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">param</span> [, <span class="built_in">param</span>]) =&gt; expression;<span class="comment"> //例如 (x,y) =&gt; (x + y);</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>一个参数对应多个表示式。</li>
+</ol>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">param =&gt; &#123;statements;&#125; //例如 <span class="meta">x</span> = &gt; &#123; <span class="meta">x</span>++; <span class="meta">return</span> <span class="meta">x</span>;&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>多个参数对应多个表达式。</li>
+</ol>
+<figure class="highlight sas"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">([param] [, param]) =&gt; &#123;statements&#125; // 例如 (<span class="meta">x</span>,y) =&gt; &#123; <span class="meta">x</span>++;y++;<span class="meta">return</span> <span class="meta">x</span><span class="comment">*y;</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>表达式里没有参数。</li>
+</ol>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">() =&gt; expression; <span class="regexp">//</span>例如var flag = <span class="function">(<span class="params">()</span> =&gt;</span> <span class="number">2</span>)(); flag等于<span class="number">2</span></span><br><span class="line"></span><br><span class="line">() =&gt; &#123;statements;&#125; <span class="regexp">//</span>例如 var flag = <span class="function">(<span class="params">()</span> =&gt;</span> &#123;<span class="keyword">return</span> <span class="number">1</span>;&#125;)(); flag就等于<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>传入一个表达式，返回一个对象。</li>
+</ol>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">([param])</span> =&gt; <span class="comment">(&#123; key: value &#125;)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>例如</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fuc = <span class="function">(<span class="params">x</span>) =&gt;</span> (&#123;<span class="attr">key</span>:x&#125;)</span><br><span class="line"><span class="keyword">var</span> <span class="built_in">object</span> = fuc(<span class="number">1</span>);</span><br><span class="line">alert(<span class="built_in">object</span>);<span class="comment">//&#123;key:1&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="this"><a href="#this" class="headerlink" title="this"></a>this</h2><p>箭头函数内的<code>this</code>值继承自外围作用域。运行时它会首先到它的父作用域找，如果父作用域还是箭头函数，那么接着向上找，直到找到需要的<code>this</code>指向。</p>
+<p>一道经典的关于<code>this</code>的面试题</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;leo&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> teacher = &#123;</span><br><span class="line">    name: <span class="string">&quot;大彬哥&quot;</span>,</span><br><span class="line">    showName: <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">showTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            alert(<span class="keyword">this</span>.name);</span><br><span class="line">        &#125;</span><br><span class="line">        showTest();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">teacher.showName();<span class="comment">//结果是 leo，而期待的是大彬哥，这里this指向了window，而需要指向teacher</span></span><br></pre></td></tr></table></figure>
+
+<p>ES5中的<code>this</code>特别容易出问题，指向非常混乱,ES6的箭头函数解决了这个问题。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;leo&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> teacher = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;大彬哥&quot;</span>,</span><br><span class="line">    <span class="attr">showName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> showTest = <span class="function">()=&gt;</span>alert(<span class="built_in">this</span>.name);</span><br><span class="line">        showTest();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">teacher.showName();</span><br></pre></td></tr></table></figure>
+
+<p>箭头函数中的<code>this</code>其实是父级作用域中的<code>this</code>。箭头函数引用了父级的变量词法作用域就是一个变量的作用在定义的时候就已经被定义好，当在本作用域中找不到变量，就会一直向父作用域中查找，直到找到为止。</p>
+<p>由于<code>this</code>在箭头函数中已经按照词法作用域绑定了，所以，用<code>call</code>或者<code>apply</code>调用箭头函数时，无法对<code>this</code>进行绑定，传入的第一个参数被忽略。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    <span class="attr">birth</span>: <span class="number">1996</span>,</span><br><span class="line">    <span class="attr">getAge</span>: <span class="function"><span class="keyword">function</span> (<span class="params">year</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> b = <span class="built_in">this</span>.birth; <span class="comment">// 1996</span></span><br><span class="line">        <span class="keyword">var</span> fn = <span class="function">(<span class="params">y</span>) =&gt;</span> y - <span class="built_in">this</span>.birth; <span class="comment">// this.birth仍是1996</span></span><br><span class="line">        <span class="keyword">return</span> fn.call(&#123;<span class="attr">birth</span>:<span class="number">1990</span>&#125;, year);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">obj.getAge(<span class="number">2018</span>); <span class="comment">// 22 （ 2018 - 1996）</span></span><br></pre></td></tr></table></figure>
+
+<p><code>this</code>已经在词法层面完成了绑定，通过<code>call</code>或<code>apply</code>方法调用一个函数时，只是传入了参数而已，对<code>this</code>并没有什么影响 。</p>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><h3 id="没有arguments"><a href="#没有arguments" class="headerlink" title="没有arguments"></a>没有arguments</h3><p>箭头函数不仅没有<code>this</code>，常用的<code>arguments</code>也没有。如果能获取到<code>arguments</code>，那它一定是来自父作用域的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="built_in">arguments</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo(<span class="number">1</span>, <span class="number">2</span>)(<span class="number">3</span>, <span class="number">4</span>)  <span class="comment">// 1，2</span></span><br></pre></td></tr></table></figure>
+
+<p>上例中如果箭头函数有<code>arguments</code>，就应该输出的是<code>3，4</code>而不是<code>1，2</code>。</p>
+<p>箭头函数不绑定<code>arguments</code>，取而代之用<code>rest</code>参数<code>…</code>解决</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="function">(<span class="params">...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> args</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(foo(<span class="number">1</span>,<span class="number">3</span>,<span class="number">56</span>,<span class="number">36</span>,<span class="number">634</span>,<span class="number">6</span>))    <span class="comment">// [1, 3, 56, 36, 634, 6]</span></span><br></pre></td></tr></table></figure>
+
+<p>箭头函数要实现类似纯函数的效果，必须剔除外部状态。箭头函数除了传入的参数之外，在普通函数里常见的<code>this</code>、<code>arguments</code>、<code>caller</code>统统没有！</p>
+<p>如果在箭头函数引用了<code>this</code>、<code>arguments</code>或者参数之外的变量，那它们一定不是箭头函数本身包含的，而是从父级作用域继承的。</p>
+<h3 id="不能使用new"><a href="#不能使用new" class="headerlink" title="不能使用new"></a>不能使用new</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> Person = <span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> one = <span class="keyword">new</span> Person(<span class="string">&quot;galler&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>运行该程序，则出现<code>TypeError: Person is not a constructor</code></p>
+<h3 id="与变量解构结合"><a href="#与变量解构结合" class="headerlink" title="与变量解构结合"></a>与变量解构结合</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> full = <span class="function">(<span class="params">&#123; first, last &#125;</span>) =&gt;</span> first + <span class="string">&#x27; &#x27;</span> + last;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">full</span>(<span class="params">person</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> person.first + <span class="string">&#x27; &#x27;</span> + person.last;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">full(&#123;<span class="attr">first</span>: <span class="number">1</span>, <span class="attr">last</span>: <span class="number">5</span>&#125;) <span class="comment">// &#x27;1 5&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="没有原型属性"><a href="#没有原型属性" class="headerlink" title="没有原型属性"></a>没有原型属性</h3><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var foo = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(foo.prototype) //<span class="literal">undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>由此可以看出箭头函数没有原型，另一个错误是在原型上使用箭头函数，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.foo = <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">A.prototype.bar = <span class="function">() =&gt;</span> <span class="built_in">console</span>.log(<span class="built_in">this</span>.foo)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> A()</span><br><span class="line">a.bar()  <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>箭头函数中的<code>this</code>不是指向A，而是根据变量查找规则回溯到了全局作用域。使用普通函数就不存在问题。箭头函数中不可加<code>new</code>，也就是说箭头函数不能当构造函数进行使用。</p>
+<h3 id="不能换行"><a href="#不能换行" class="headerlink" title="不能换行"></a>不能换行</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="function"><span class="keyword">func</span> <span class="title">=</span> ()</span></span><br><span class="line">           <span class="operator">=&gt;</span> <span class="number">1</span>; <span class="comment">// SyntaxError: expected expression, got &#x27;=&gt;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>如果开发中确实一行搞不定,逻辑很多，就加<code>&#123;&#125;</code>，就可以换行了。</p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> func = <span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;来啊！互相伤害啊！&#x27;</span>; <span class="comment">// 1.加&#123;&#125; 2.加return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="解决函数上下文问题"><a href="#解决函数上下文问题" class="headerlink" title="解决函数上下文问题"></a>解决函数上下文问题</h3><p>使用<code>jQuery</code>来展示一个每秒都会更新的时钟。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;.time&#x27;</span>).each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="built_in">this</span>).text(<span class="built_in">Date</span>.now());</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>当尝试在<code>setInterval</code>的回调中使用<code>this</code>来引用DOM元素时，很不幸，得到的只是一个属于回调函数自身上下文的<code>this</code>。通常的解决办法是定义一个<code>that</code>或者<code>self</code>变量。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;.time&#x27;</span>).each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="built_in">this</span>;</span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(self).text(<span class="built_in">Date</span>.now());</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>但当使用箭头函数时，这个问题就不复存在了。因为它不产生属于它自己上下文的<code>this</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;.time&#x27;</span>).each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> $(<span class="built_in">this</span>).text(<span class="built_in">Date</span>.now()), <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="简化回调函数"><a href="#简化回调函数" class="headerlink" title="简化回调函数"></a>简化回调函数</h3><h4 id="正常函数"><a href="#正常函数" class="headerlink" title="正常函数"></a>正常函数</h4><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].map(<span class="keyword">function</span> <span class="title"></span>(x) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="type">x</span> * x;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h4><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span><span class="punctuation">,</span><span class="number">2</span><span class="punctuation">,</span><span class="number">3</span>].map(<span class="keyword">x</span> <span class="operator">=</span>&gt; <span class="keyword">x</span> * <span class="keyword">x</span>)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="事件监听函数"><a href="#事件监听函数" class="headerlink" title="事件监听函数"></a>事件监听函数</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">document.body.add<span class="constructor">EventListener(&#x27;<span class="params">click</span>&#x27;, <span class="params">event</span>=&gt;<span class="params">console</span>.<span class="params">log</span>(<span class="params">event</span>, <span class="params">this</span>)</span>); </span><br><span class="line"><span class="comment">// EventObject, BodyElement</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li><p>箭头函数是使用<code>=&gt;</code>语法的函数简写形式。这在语法上与C#、Java 8、Python（lambda函数）和 CoffeeScript的相关特性非常相似。</p>
+</li>
+<li><p>非常简洁的语法，使用箭头函数比普通函数少些动词，如：<code>function</code>或<code>return</code>。</p>
+<ol>
+<li>() =&gt; { … } // 零个参数用 () 表示。</li>
+<li>x =&gt; { … } // 一个参数可以省略 ()。</li>
+<li>(x, y) =&gt; { … } // 多参数不能省略 ()。</li>
+</ol>
+</li>
+<li><p>如果只有一个<code>return</code>，<code>&#123;&#125;</code>可以省略。</p>
+</li>
+<li><p>更直观的作用域和<code>this</code>的绑定，更好的处理<code>this</code>的指向问题。</p>
+</li>
+</ul>
+<h3 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h3><p>箭头函数适合于无复杂逻辑或者无副作用的纯函数场景下，例如用在<code>map</code>、<code>reduce</code>、<code>filter</code>的回调函数定义</p>
+<p>中，另外目前<code>vue</code>、<code>react</code>、<code>node</code>等库，都大量使用箭头函数，直接定义<code>function</code>的情况已经很少了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/24/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%883%EF%BC%89%E2%80%94%E2%80%94%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A8%A1%E6%9D%BF/" rel="prev" title="ES6从入门到放弃（3）——字符串模板">
+                  <i class="fa fa-chevron-left"></i> ES6从入门到放弃（3）——字符串模板
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/27/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%885%EF%BC%89%E2%80%94%E2%80%94%E8%BF%90%E7%AE%97%E7%AC%A6/" rel="next" title="ES6从入门到放弃（5）——运算符">
+                  ES6从入门到放弃（5）——运算符 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+<script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeptinary</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="简介BFC全称是Block Formatting Context，即块格式化上下文。它是CSS2.1规范定义的，关于CSS渲染定位的一个概念。要明白BFC到底是什么，首先来看看什么是视觉格式化模型。 视觉格式化模型视觉格式化模型(visual formatting model)是用来处理文档并将它显示在视觉媒体上的机制，它也是CSS中的一个概念。 视觉格式化模型定义了盒（Box）的生成，盒主要包括">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BFC (Block Formatting Context)">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="简介BFC全称是Block Formatting Context，即块格式化上下文。它是CSS2.1规范定义的，关于CSS渲染定位的一个概念。要明白BFC到底是什么，首先来看看什么是视觉格式化模型。 视觉格式化模型视觉格式化模型(visual formatting model)是用来处理文档并将它显示在视觉媒体上的机制，它也是CSS中的一个概念。 视觉格式化模型定义了盒（Box）的生成，盒主要包括">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://sdzbzjh.github.io/images/BFC-Block-Formatting-Context/BFC_1.jpg">
+<meta property="og:image" content="http://sdzbzjh.github.io/images/BFC-Block-Formatting-Context/BFC_2.jpg">
+<meta property="og:image" content="http://sdzbzjh.github.io/images/BFC-Block-Formatting-Context/BFC_3.jpg">
+<meta property="og:image" content="http://sdzbzjh.github.io/images/BFC-Block-Formatting-Context/BFC_4.jpg">
+<meta property="article:published_time" content="2019-06-04T02:13:19.000Z">
+<meta property="article:modified_time" content="2022-07-15T01:09:25.233Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sdzbzjh.github.io/images/BFC-Block-Formatting-Context/BFC_1.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>BFC (Block Formatting Context)</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2019/06/04/this%E3%80%81apply%E3%80%81call%E3%80%81bind/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2019/06/03/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%8811%EF%BC%89%E2%80%94%E2%80%94generator%E4%B8%8E%E7%8A%B6%E6%80%81%E6%9C%BA/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <!-- <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li> -->
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <!-- <span id="i-share" class="info" style="display:none;">分享文章</span> -->
+    </span>
+    <br/>
+    <!-- <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&text=BFC (Block Formatting Context)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&is_video=false&description=BFC (Block Formatting Context)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BFC (Block Formatting Context)&body=Check out this article: http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&name=BFC (Block Formatting Context)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&t=BFC (Block Formatting Context)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div> -->
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E8%A7%89%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">视觉格式化模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E7%9B%92%EF%BC%88block-box%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">块盒（block box）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%86%85%E7%9B%92%EF%BC%88inline-box%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">行内盒（inline box）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E7%9B%92%EF%BC%88anonymous-box%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">匿名盒（anonymous box）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%AE%9A%E4%BD%8D%E6%96%B9%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text">三个定位方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E6%B5%81-Normal-flow"><span class="toc-number">3.1.</span> <span class="toc-text">常规流(Normal flow)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E5%8A%A8-Floats"><span class="toc-number">3.2.</span> <span class="toc-text">浮动(Floats)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D-Absolute-positioning"><span class="toc-number">3.3.</span> <span class="toc-text">绝对定位(Absolute positioning)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%97%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">4.</span> <span class="toc-text">块格式化上下文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC%E7%9A%84%E5%88%9B%E5%BB%BA%E6%96%B9%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">BFC的创建方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC%E7%9A%84%E8%8C%83%E5%9B%B4"><span class="toc-number">4.2.</span> <span class="toc-text">BFC的范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC%E7%9A%84%E6%95%88%E6%9E%9C"><span class="toc-number">4.3.</span> <span class="toc-text">BFC的效果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81%E6%9D%A5%E5%88%86%E6%9E%90BFC"><span class="toc-number">5.</span> <span class="toc-text">从实际代码来分析BFC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%B8%80"><span class="toc-number">5.1.</span> <span class="toc-text">实例一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%BA%8C"><span class="toc-number">5.2.</span> <span class="toc-text">实例二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%B8%89"><span class="toc-number">5.3.</span> <span class="toc-text">实例三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E5%9B%9B"><span class="toc-number">5.4.</span> <span class="toc-text">实例四</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        BFC (Block Formatting Context)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zeptinary</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-06-04T02:13:19.000Z" itemprop="datePublished">2019-06-04</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/CSS/">CSS</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>BFC全称是<code>Block Formatting Context</code>，即块格式化上下文。它是CSS2.1规范定义的，关于CSS渲染定位的一个概念。要明白BFC到底是什么，首先来看看什么是视觉格式化模型。</p>
+<h2 id="视觉格式化模型"><a href="#视觉格式化模型" class="headerlink" title="视觉格式化模型"></a>视觉格式化模型</h2><p>视觉格式化模型(<code>visual formatting model</code>)是用来处理文档并将它显示在视觉媒体上的机制，它也是CSS中的一个概念。</p>
+<p>视觉格式化模型定义了盒（<code>Box</code>）的生成，盒主要包括了块盒、行内盒、匿名盒（没有名字不能被选择器选中的盒）以及一些实验性的盒（未来可能添加到规范中）。盒的类型由<code>display</code>属性决定。</p>
+<h3 id="块盒（block-box）"><a href="#块盒（block-box）" class="headerlink" title="块盒（block box）"></a>块盒（block box）</h3><ul>
+<li>当元素的CSS属性<code>display</code>为<code>block</code>，<code>list-item</code>或<code>table</code>时，它是块级元素 <code>block-level</code>。</li>
+<li>视觉上呈现为块，竖直排列。</li>
+<li>块级盒参与(块格式化上下文)。</li>
+<li>每个块级元素至少生成一个块级盒，称为主要块级盒(<code>principal block-level box</code>)。一些元素，比如<code>li</code>，生成额外的盒来放置项目符号，不过多数元素只生成一个主要块级盒。 </li>
+</ul>
+<h3 id="行内盒（inline-box）"><a href="#行内盒（inline-box）" class="headerlink" title="行内盒（inline box）"></a>行内盒（inline box）</h3><ul>
+<li>当元素的CSS属性<code>display</code>的计算值为<code>inline</code>，<code>inline-block</code>或<code>inline-table</code>时，称它为行内级元素。</li>
+<li>视觉上它将内容与其它行内级元素排列为多行。典型的如段落内容，有文本(可以有多种格式譬如着重)，或图片，都是行内级元素。</li>
+<li>行内级元素生成行内级盒(<code>inline-level boxes</code>)，参与行内格式化上下文(<code>inline formatting context</code>)。同时参与生成行内格式化上下文的行内级盒称为行内盒(<code>inline boxes</code>)。所有<code>display:inline</code>的非替换元素生成的盒是行内盒。</li>
+<li>不参与生成行内格式化上下文的行内级盒称为原子行内级盒(<code>atomic inline-level boxes</code>)。这些盒由可替换行内元素，或<code>display</code>值为<code>inline-block</code>或<code>inline-table</code>的元素生成，不能拆分成多个盒。</li>
+</ul>
+<h3 id="匿名盒（anonymous-box）"><a href="#匿名盒（anonymous-box）" class="headerlink" title="匿名盒（anonymous box）"></a>匿名盒（anonymous box）</h3><p>匿名盒也有份匿名块盒与匿名行内盒，因为匿名盒没有名字，不能利用选择器来选择它们，所以它们的所有属性都为<code>inherit</code>或初始默认值。</p>
+<p>如下面例子，会创键匿名块盒来包含毗邻的行内级盒：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">div</span>&gt;</span><br><span class="line">    Some inline <span class="keyword">text</span></span><br><span class="line">    &lt;p&gt;followed <span class="keyword">by</span> <span class="keyword">a</span> <span class="keyword">paragraph</span>&lt;/p&gt;</span><br><span class="line">    followed <span class="keyword">by</span> more inline <span class="keyword">text</span>.</span><br><span class="line">&lt;/<span class="keyword">div</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三个定位方案"><a href="#三个定位方案" class="headerlink" title="三个定位方案"></a>三个定位方案</h2><p>在定位的时候，浏览器就会根据元素的盒类型和上下文对这些元素进行定位，可以说盒就是定位的基本单位。定位时，有三种定位方案，分别是常规流，浮动已经绝对定位。</p>
+<h3 id="常规流-Normal-flow"><a href="#常规流-Normal-flow" class="headerlink" title="常规流(Normal flow)"></a>常规流(Normal flow)</h3><ul>
+<li>在常规流中，盒一个接着一个排列。</li>
+<li>在块级格式化上下文里面， 它们竖着排列。</li>
+<li>在行内格式化上下文里面， 它们横着排列。</li>
+<li>当<code>position</code>为<code>static</code>或<code>relative</code>，并且<code>float</code>为<code>none</code>时会触发常规流。</li>
+<li>对于静态定位(<code>static positioning</code>)，<code>position:static</code>，盒的位置是常规流布局里的位置。</li>
+<li>对于相对定位(<code>relative positioning</code>)，<code>position:relative</code>，盒偏移位置由这些属性定义<code>top</code>，<code>bottom</code>，<code>left</code>和<code>right</code>。即使有偏移，仍然保留原有的位置，其它常规流不能占用这个位置。</li>
+</ul>
+<h3 id="浮动-Floats"><a href="#浮动-Floats" class="headerlink" title="浮动(Floats)"></a>浮动(Floats)</h3><ul>
+<li>盒称为浮动盒(<code>floating boxes</code>)。</li>
+<li>它位于当前行的开头或末尾。</li>
+<li>这导致常规流环绕在它的周边，除非设置<code>clear</code>属性。</li>
+</ul>
+<h3 id="绝对定位-Absolute-positioning"><a href="#绝对定位-Absolute-positioning" class="headerlink" title="绝对定位(Absolute positioning)"></a>绝对定位(Absolute positioning)</h3><ul>
+<li>绝对定位方案，盒从常规流中被移除，不影响常规流的布局。</li>
+<li>它的定位相对于它的包含块，相关CSS属性：<code>top</code>，<code>bottom</code>，<code>left</code>及<code>right</code>。</li>
+<li>如果元素的属性<code>position</code>为<code>absolute</code>或<code>fixed</code>，它是绝对定位元素。</li>
+<li>对于<code>position:absolute</code>，元素定位将相对于最近的一个<code>relative</code>、<code>fixed</code>或<code>absolute</code>的父元素，如果没有则相对于<code>body</code>。</li>
+</ul>
+<h2 id="块格式化上下文"><a href="#块格式化上下文" class="headerlink" title="块格式化上下文"></a>块格式化上下文</h2><p>到这里，已经对CSS的定位有一定的了解了，从上面的信息中也可以得知，块格式上下文是页面CSS 视觉渲染的一部分，用于决定块盒子的布局及浮动相互影响范围的一个区域。</p>
+<h3 id="BFC的创建方法"><a href="#BFC的创建方法" class="headerlink" title="BFC的创建方法"></a>BFC的创建方法</h3><ul>
+<li>根元素或其它包含它的元素。</li>
+<li>浮动 (元素的<code>float</code>不为<code>none</code>)。</li>
+<li>绝对定位元素 (元素的<code>position</code>为<code>absolute</code>或<code>fixed</code>)。</li>
+<li>行内块<code>inline-blocks</code>(元素的<code>display:inline-block</code>)。</li>
+<li>表格单元格(元素的<code>display:table-cell</code>，HTML表格单元格默认属性)。</li>
+<li><code>overflow</code>的值不为<code>visible</code>的元素。</li>
+<li>弹性盒<code>flex boxes</code>(元素的<code>display:flex</code>或<code>inline-flex</code>)。</li>
+</ul>
+<p>但其中，最常见的就是<code>overflow:hidden</code>、<code>float:left/right</code>、<code>position:absolute</code>。也就是说，每次看到这些属性的时候，就代表了该元素以及创建了一个BFC了。</p>
+<h3 id="BFC的范围"><a href="#BFC的范围" class="headerlink" title="BFC的范围"></a>BFC的范围</h3><p>BFC的范围在MDN中是这样描述的。</p>
+<blockquote>
+<p>A block formatting context contains everything inside of the element creating it that is not also inside a descendant element that creates a new block formatting context.</p>
+</blockquote>
+<p>中文的意思一个BFC包含创建该上下文元素的所有子元素，但不包括创建了新BFC的子元素的内部元素。</p>
+<p>这段看上去有点奇怪，我是这么理解的，加入有下面代码，<code>class</code>名为.BFC代表创建了新的块格式化：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">&#x27;div_1&#x27;</span> <span class="keyword">class</span>=&#x27;<span class="symbol">BFC</span>&#x27;&gt;</span><br><span class="line">    &lt;<span class="symbol">div</span> <span class="symbol">id</span>=&#x27;<span class="symbol">div_2</span>&#x27;&gt;</span><br><span class="line">        &lt;<span class="symbol">div</span> <span class="symbol">id</span>=&#x27;<span class="symbol">div_3</span>&#x27;&gt;&lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">        &lt;<span class="symbol">div</span> <span class="symbol">id</span>=&#x27;<span class="symbol">div_4</span>&#x27;&gt;&lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">    &lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">    &lt;<span class="symbol">div</span> <span class="symbol">id</span>=&#x27;<span class="symbol">div_5</span>&#x27; <span class="symbol">class</span>=&#x27;<span class="symbol">BFC</span>&#x27;&gt;</span><br><span class="line">        &lt;<span class="symbol">div</span> <span class="symbol">id</span>=&#x27;<span class="symbol">div_6</span>&#x27;&gt;&lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">        &lt;<span class="symbol">div</span> <span class="symbol">id</span>=&#x27;<span class="symbol">div_7</span>&#x27;&gt;&lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">    &lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">&lt;/<span class="symbol">div</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码表示，<code>#div_1</code>创建了一个块格式上下文，这个上下文包括了<code>#div_2</code>、<code>#div_3</code>、<code>#div_4</code>、<code>#div_5</code>。即<code>#div_2</code>中的子元素也属于<code>#div_1</code>所创建的BFC。但由于<code>#div_5</code>创建了新的BFC，所以<code>#div_6</code>和<code>#div_7</code>就被排除在外层的BFC之外。</p>
+<p>我认为，这从另一方角度说明，一个元素不能同时存在于两个BFC中。</p>
+<p>BFC的一个最重要的效果是，让处于BFC内部的元素与外部的元素相互隔离，使内外元素的定位不会相互影响。这是利用BFC清除浮动所利用的特性，关于清除浮动将在后面讲述。<br>如果一个元素能够同时处于两个BFC中，那么就意味着这个元素能与两个BFC中的元素发生作用，就违反了BFC的隔离作用，所以这个假设就不成立了。</p>
+<h3 id="BFC的效果"><a href="#BFC的效果" class="headerlink" title="BFC的效果"></a>BFC的效果</h3><p>就如刚才提到的，BFC的最显著的效果就是建立一个隔离的空间，断绝空间内外元素间相互的作用。然而，BFC还有更多的特性：</p>
+<blockquote>
+<p>Floats, absolutely positioned elements, block containers (such as inline-blocks, table-cells, and table-captions) that are not block boxes, and block boxes with ‘overflow’ other than ‘visible’ (except when that value has been propagated to the viewport) establish new block formatting contexts for their contents.</p>
+<p>In a block formatting context, boxes are laid out one after the other, vertically, beginning at the top of a containing block. The vertical distance between two sibling boxes is determined by the ‘margin’ properties. Vertical margins between adjacent block-level boxes in a block formatting context collapse.</p>
+<p>In a block formatting context, each box’s left outer edge touches the left edge of the containing block (for right-to-left formatting, right edges touch). This is true even in the presence of floats (although a box’s line boxes may shrink due to the floats), unless the box establishes a new block formatting context (in which case the box itself may become narrower due to the floats).</p>
+</blockquote>
+<p>简单归纳一下：</p>
+<ul>
+<li>内部的盒会在垂直方向一个接一个排列（可以看作BFC中有一个的常规流）。</li>
+<li>处于同一个BFC中的元素相互影响，可能会发生margin collapse。</li>
+<li>每个元素的margin box的左边，与容器块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。</li>
+<li>BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然。<br>计算BFC的高度时，考虑BFC所包含的所有元素，连浮动元素也参与计算。</li>
+<li>浮动盒区域不叠加到BFC上。</li>
+</ul>
+<p>这么多性质有点难以理解，但可以作如下推理来帮助理解：<code>html</code>的根元素就是<code>&lt;html&gt;</code>，而根元素会创建一个BFC，创建一个新的BFC时就相当于在这个元素内部创建一个新的<code>&lt;html&gt;</code>，子元素的定位就如同在一个新<code>&lt;html&gt;</code>页面中那样，而这个新旧<code>html</code>页面之间时不会相互影响的。</p>
+<p>上述这个理解并不是最准确的理解，甚至是将因果倒置了（因为<code>html</code>是根元素，因此才会有BFC的特性，而不是BFC有<code>html</code>的特性），但这样的推理可以帮助理解BFC这个概念。</p>
+<h2 id="从实际代码来分析BFC"><a href="#从实际代码来分析BFC" class="headerlink" title="从实际代码来分析BFC"></a>从实际代码来分析BFC</h2><p>讲了这么多，还是比较难理解，所以下面通过一些例子来加深对BFC的认识。</p>
+<h3 id="实例一"><a href="#实例一" class="headerlink" title="实例一"></a>实例一</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    * &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.left</span>&#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#73DE80</span>;    <span class="comment">/* 绿色 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">0.5</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#F31264</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">200px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">float</span>: left;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.right</span>&#123;                        <span class="comment">/* 粉色 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#EF5BE2</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">0.5</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">border</span>: <span class="number">3px</span> solid <span class="number">#F31264</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>:<span class="number">400px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">min-height</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.box</span>&#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>:<span class="number">#888</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin-left</span>: <span class="number">50px</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;box&#x27;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;left&#x27;</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;right&#x27;</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>显示效果：</p>
+<p><img src="/images/BFC-Block-Formatting-Context/BFC_1.jpg" alt="BFC_1"></p>
+<p>绿色框<code>#left</code>向左浮动，它创建了一个新BFC，但暂时不讨论它所创建的BFC。由于绿色框浮动了，它脱离了原本<code>normal flow</code>的位置，因此，粉色框<code>#right</code>就被定位到灰色父元素的左上角（特性3：元素左边与容器左边相接触），与浮动绿色框发生了重叠。</p>
+<p>同时，由于灰色框<code>#box</code>并没有创建BFC，因此在计算高度的时候，并没有考虑绿色框的区域（特性6：浮动区域不叠加到BFC区域上），发生了高度坍塌，这也是常见问题之一。</p>
+<h3 id="实例二"><a href="#实例二" class="headerlink" title="实例二"></a>实例二</h3><p>现在通过设置<code>overflow:hidden</code>来创建BFC，再看看效果如何。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.BFC&#123;</span><br><span class="line">    overflow:hidden;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div <span class="keyword">class</span>=&#x27;<span class="symbol">box</span> <span class="symbol">BFC</span>&#x27;&gt;</span><br><span class="line">    &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&#x27;<span class="symbol">left</span>&#x27;&gt; &lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">    &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&#x27;<span class="symbol">right</span>&#x27;&gt; &lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">&lt;/<span class="symbol">div</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>显示效果：</p>
+<p><img src="/images/BFC-Block-Formatting-Context/BFC_2.jpg" alt="BFC_2"></p>
+<p>灰色框创建了一个新的BFC后，高度发生了变化，计算高度时它将绿色框区域也考虑进去了（特性5：计算BFC的高度时，浮动元素也参与计算）。</p>
+<p>而绿色框和红色框的显示效果仍然没有任何变化。</p>
+<h3 id="实例三"><a href="#实例三" class="headerlink" title="实例三"></a>实例三</h3><p>现在，现将一些小块添加到粉色框中，看看效果：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.little</span>&#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background</span>: <span class="number">#fff</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">50px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">50px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">float</span>: left;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;box BFC&#x27;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;left&#x27;</span>&gt;</span> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;right&#x27;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;little&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;little&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&#x27;little&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>显示效果：</p>
+<p><img src="/images/BFC-Block-Formatting-Context/BFC_3.jpg" alt="BFC_3"></p>
+<p>由于粉色框没有创建新的BFC，因此粉色框中白色块受到了绿色框的影响，被挤到了右边去了。先不管这个，看看白色块的<code>margin</code>。</p>
+<h3 id="实例四"><a href="#实例四" class="headerlink" title="实例四"></a>实例四</h3><p>利用同实例二中一样的方法，为粉色框创建BFC：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=&#x27;<span class="symbol">box</span> <span class="symbol">BFC</span>&#x27;&gt;</span><br><span class="line">    &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&#x27;<span class="symbol">left</span>&#x27;&gt; &lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">    &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&#x27;<span class="symbol">right</span> <span class="symbol">BFC</span>&#x27;&gt;</span><br><span class="line">        &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&#x27;<span class="symbol">little</span>&#x27;&gt;&lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">        &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&#x27;<span class="symbol">little</span>&#x27;&gt;&lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">        &lt;<span class="symbol">div</span> <span class="symbol">class</span>=&#x27;<span class="symbol">little</span>&#x27;&gt;&lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">    &lt;/<span class="symbol">div</span>&gt;</span><br><span class="line">&lt;/<span class="symbol">div</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>显示效果：</p>
+<p><img src="/images/BFC-Block-Formatting-Context/BFC_4.jpg" alt="BFC_4"></p>
+<p>一旦粉色框创建了新的BFC以后，粉色框就不与绿色浮动框发生重叠了，同时内部的白色块处于隔离的空间（特性4：BFC就是页面上的一个隔离的独立容器），白色块也不会受到绿色浮动框的挤压。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>BFC的概念比较抽象，但通过实例分析应该能够更好地理解BFC。在实际中，利用BFC可以闭合浮动（实例二），防止与浮动元素重叠（实例四）。同时，由于BFC的隔离作用，可以利用BFC包含一个元素，防止这个元素与BFC外的元素发生<code>margin collapse</code>。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E8%A7%89%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">视觉格式化模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E7%9B%92%EF%BC%88block-box%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">块盒（block box）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%86%85%E7%9B%92%EF%BC%88inline-box%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">行内盒（inline box）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E7%9B%92%EF%BC%88anonymous-box%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">匿名盒（anonymous box）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%AE%9A%E4%BD%8D%E6%96%B9%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text">三个定位方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E6%B5%81-Normal-flow"><span class="toc-number">3.1.</span> <span class="toc-text">常规流(Normal flow)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E5%8A%A8-Floats"><span class="toc-number">3.2.</span> <span class="toc-text">浮动(Floats)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D-Absolute-positioning"><span class="toc-number">3.3.</span> <span class="toc-text">绝对定位(Absolute positioning)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%97%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">4.</span> <span class="toc-text">块格式化上下文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC%E7%9A%84%E5%88%9B%E5%BB%BA%E6%96%B9%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">BFC的创建方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC%E7%9A%84%E8%8C%83%E5%9B%B4"><span class="toc-number">4.2.</span> <span class="toc-text">BFC的范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC%E7%9A%84%E6%95%88%E6%9E%9C"><span class="toc-number">4.3.</span> <span class="toc-text">BFC的效果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81%E6%9D%A5%E5%88%86%E6%9E%90BFC"><span class="toc-number">5.</span> <span class="toc-text">从实际代码来分析BFC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%B8%80"><span class="toc-number">5.1.</span> <span class="toc-text">实例一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%BA%8C"><span class="toc-number">5.2.</span> <span class="toc-text">实例二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E4%B8%89"><span class="toc-number">5.3.</span> <span class="toc-text">实例三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E5%9B%9B"><span class="toc-number">5.4.</span> <span class="toc-text">实例四</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&text=BFC (Block Formatting Context)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&is_video=false&description=BFC (Block Formatting Context)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=BFC (Block Formatting Context)&body=Check out this article: http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&title=BFC (Block Formatting Context)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&name=BFC (Block Formatting Context)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/06/04/BFC-Block-Formatting-Context/&t=BFC (Block Formatting Context)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022
+    Zeptinary
+    <a href="https://www.trisunsoft.com/we/" target="_blank">免费 Windows 实用工具包</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="简述不仅仅是img，下面的设计都是失误： 123456&lt;img src&#x3D;&quot;https:&#x2F;&#x2F;www.baidu.com&quot; &#x2F;&gt;&lt;script src&#x3D;&quot;https:&#x2F;&#x2F;www.baidu.com&quot;&gt;&lt;&#x2F;script&gt;&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https:&#x2F;&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="img标签是Web标准的最大失误">
+<meta property="og:url" content="http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="简述不仅仅是img，下面的设计都是失误： 123456&lt;img src&#x3D;&quot;https:&#x2F;&#x2F;www.baidu.com&quot; &#x2F;&gt;&lt;script src&#x3D;&quot;https:&#x2F;&#x2F;www.baidu.com&quot;&gt;&lt;&#x2F;script&gt;&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https:&#x2F;&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-29T05:48:39.000Z">
+<meta property="article:modified_time" content="2022-07-15T01:09:25.240Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>img标签是Web标准的最大失误</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2019/06/18/Vuex%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%884%EF%BC%89%E2%80%94%E2%80%94%E5%85%B6%E4%BB%96/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <!-- <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li> -->
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <!-- <span id="i-share" class="info" style="display:none;">分享文章</span> -->
+    </span>
+    <br/>
+    <!-- <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&text=img标签是Web标准的最大失误"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&is_video=false&description=img标签是Web标准的最大失误"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=img标签是Web标准的最大失误&body=Check out this article: http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&name=img标签是Web标准的最大失误&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&t=img标签是Web标准的最大失误"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div> -->
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B1%E5%AE%B3"><span class="toc-number">2.</span> <span class="toc-text">危害</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%BD%E6%A0%B9%E6%BA%AF%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">追根溯源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1993%E5%B9%B4Mosaic%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">1993年Mosaic浏览器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1994%E5%B9%B4Netscape%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%95%E5%85%A5cookie"><span class="toc-number">3.2.</span> <span class="toc-text">1994年Netscape浏览器引入cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1995%E5%B9%B4Netscape%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%95%E5%85%A5%E4%BA%86script"><span class="toc-number">3.3.</span> <span class="toc-text">1995年Netscape浏览器引入了script</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1999%E5%B9%B4Microsoft-XMLHTTP"><span class="toc-number">3.4.</span> <span class="toc-text">1999年Microsoft.XMLHTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2008%E5%B9%B4cross-origin%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-number">3.5.</span> <span class="toc-text">2008年cross origin标准化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%90%E6%B8%90%E5%AE%8C%E7%BE%8E%EF%BC%8CSameSite-Cookie"><span class="toc-number">4.</span> <span class="toc-text">逐渐完美，SameSite Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">其他问题</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        img标签是Web标准的最大失误
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zeptinary</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-12-29T05:48:39.000Z" itemprop="datePublished">2021-12-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>不仅仅是<code>img</code>，下面的设计都是失误：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://www.baidu.com&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://www.baidu.com&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://www.baidu.com&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">src</span>=<span class="string">&quot;https://www.baidu.com&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">audio</span> <span class="attr">src</span>=<span class="string">&quot;https://www.baidu.com&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">audio</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://www.baidu.com&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么这么说呢？因为他们都无视<code>cors</code>，并且会携带<code>cookie</code>，这就给了某些网站盗取信息的机会。</p>
+<h2 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h2><p>或许有人说，<code>script</code>和<code>form</code>可以做<code>XSS</code>攻击，但是<code>img</code>只能请求图片啊，一般数据都存在<code>json</code>或者<code>xml</code>中，<code>img</code>读不到，只能通过<code>onload</code>事件判断<code>src</code>地址的状态而已，这有什么用呢？</p>
+<blockquote>
+<p>CPU架构Bug攻击Meltdown and Spectre，Meltdown and Spectre是利用现代CPU会读多余缓存的特性，从而读取其他程序的数据。虽然<code>img</code>标签不能返回<code>json</code>数据给恶意网站的JavaScript，但是浏览器已经把<code>json</code>加载到内存中，所以攻击者可以利用Meltdown and Spectre从而设计精妙的JavaScript程序拿到数据。</p>
+</blockquote>
+<h2 id="追根溯源"><a href="#追根溯源" class="headerlink" title="追根溯源"></a>追根溯源</h2><h3 id="1993年Mosaic浏览器"><a href="#1993年Mosaic浏览器" class="headerlink" title="1993年Mosaic浏览器"></a>1993年Mosaic浏览器</h3><p>1993年，Mosaic浏览器将下面的语法，带到了浏览器。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://example.com/foo.jpg&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这大概是网页第一次可以拿到subresource。这意味的网页可以不必把所有的资源一次返回给浏览器，浏览器再发网络请求获取后续资源。这是Web的起点和基石，这是跨时代的进步。</p>
+<p><code>img</code>可以无条件跨域，失误也就从此开始，这在当时并不是一个问题，因为<code>cookie</code>还不存在。</p>
+<h3 id="1994年Netscape浏览器引入cookie"><a href="#1994年Netscape浏览器引入cookie" class="headerlink" title="1994年Netscape浏览器引入cookie"></a>1994年Netscape浏览器引入cookie</h3><p>1994年，Netscape浏览器引入<code>cookie</code>。<code>http</code>是无状态的，但是某些情况下又需要状态（例如，login状态），所以<code>cookie</code>就出现了。</p>
+<h3 id="1995年Netscape浏览器引入了script"><a href="#1995年Netscape浏览器引入了script" class="headerlink" title="1995年Netscape浏览器引入了script"></a>1995年Netscape浏览器引入了script</h3><p>1995年，Netscape浏览器支持了<code>script</code>。失误也就正式登场，<code>script</code>标签不在乎跨域，并且携带 <code>cookie</code>。这个失误也延续到<code>img</code>、<code>iframe</code>、<code>link</code>、<code>video</code>、<code>audio</code>、<code>form</code>标签上。按照这样发展下去，如果浏览器要支持异步请求数据，那么也会同样不在乎跨域并且携带<code>cookie</code>？这显然不正常。</p>
+<h3 id="1999年Microsoft-XMLHTTP"><a href="#1999年Microsoft-XMLHTTP" class="headerlink" title="1999年Microsoft.XMLHTTP"></a>1999年Microsoft.XMLHTTP</h3><p>1999年，微软引入Microsoft.XMLHTTP进行异步请求，但是此时的异步请求都局限在同源策略下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">ActiveXObject</span>(<span class="string">&quot;Microsoft XMLHTTP&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2008年cross-origin标准化"><a href="#2008年cross-origin标准化" class="headerlink" title="2008年cross origin标准化"></a>2008年cross origin标准化</h3><p>2008年，跨域请求终于被正式的被引入到Web并标准化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> oReq = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">oReq.<span class="property">withCredentials</span> = <span class="literal">true</span>; <span class="comment">//如果相加 cookie， 必须明确指明</span></span><br><span class="line">oReq.<span class="title function_">addEventListener</span>(<span class="string">&quot;load&quot;</span>, reqListener);</span><br><span class="line">oReq.<span class="title function_">open</span>(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;http://www.example.org/example.txt&quot;</span>);</span><br><span class="line">oReq.<span class="title function_">send</span>();</span><br></pre></td></tr></table></figure>
+
+<p>标准规定，如果你想让自己的资源被其他网站使用，你必须使用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a>。从此以后，整个Web标准逐渐好了起来。</p>
+<p>但是为了Web兼容性，<code>img</code>、<code>iframe</code>、<code>link</code>、<code>video</code>、<code>audio</code>、<code>form</code>等并不遵循CORS。攻击者还是可以利用<code>img</code>携带<code>cookie</code>并且忽略CORS设置，从而达到信息泄露。</p>
+<p>到此为止，<code>img</code>成为Web设计的最大的失误。</p>
+<p>与此同时，跨站攻击（<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/CSRF">CSRF</a>）也随着CORS流行成为很重要的攻击方式。为了防范CSRF，一般网站会使用<code>token</code>等方式进行防护。这一切的都是因为Web的跨域请求标准不完美！！</p>
+<h2 id="逐渐完美，SameSite-Cookie"><a href="#逐渐完美，SameSite-Cookie" class="headerlink" title="逐渐完美，SameSite Cookie"></a>逐渐完美，SameSite Cookie</h2><p><code>cookie</code>的SameSite设置，可以让跨站请求无法携带<code>cookies</code>。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookies: sessionid=test111; SameSite=Lax</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite">SameSite</a>有很多选项，严谨的解释，请参考MDN。</p>
+<p>SameSite不仅作用在<code>ajax</code>请求，还作用在<code>img</code>、<code>iframe</code>、<code>link</code>、<code>video</code>、<code>audio</code>、<code>form</code>。从而从根本上解决CSRF等问题，再也不需要<code>token</code>了。</p>
+<blockquote>
+<p>注意 SameSite 的判断和 same origin 的判断条件不一样。</p>
+</blockquote>
+<p>随着浏览器不断激进的措施，也许未来所有浏览器会让跨站请求都无法携带<code>cookies</code>，除非网站强制说明可以跨站<code>SameSite=None</code>。</p>
+<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>很多内部网站，都是不校验<code>cookie</code>的，因为内网相对安全，那么攻击者还是可以利用下面脚本做攻击，来判断用户是否在某家公司的内网，从而造成信息泄露。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://内网地址/公司logo.jpg&quot;</span> <span class="attr">onload</span>=<span class="string">&quot;alert(1)&quot;</span> /&gt;</span> //corp</span><br></pre></td></tr></table></figure>
+
+<p>还有下面的问题，</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://内网地址/员工信息.html&quot;</span> <span class="attr">onload</span>=<span class="string">&quot;alert(1)&quot;</span> /&gt;</span> //corb</span><br></pre></td></tr></table></figure>
+
+<p>如果内网的<code>html</code>没有<code>cookie</code>检验，虽然<code>img</code>标签无法显示拿到<code>html</code>信息，但是浏览器会把<code>html</code>加载到进程和内存中，利用Meltdown and Spectre CPU bug 攻击就可以拿到<code>html</code>的数据。</p>
+<blockquote>
+<p>实际上 Meltdown and Spectre 攻击的最终解决方案，是 CPU 架构的重新设计，但是这可不是几年能完成的，因为现在 CPU 的数量太多了。</p>
+</blockquote>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B1%E5%AE%B3"><span class="toc-number">2.</span> <span class="toc-text">危害</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%BD%E6%A0%B9%E6%BA%AF%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">追根溯源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1993%E5%B9%B4Mosaic%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">1993年Mosaic浏览器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1994%E5%B9%B4Netscape%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%95%E5%85%A5cookie"><span class="toc-number">3.2.</span> <span class="toc-text">1994年Netscape浏览器引入cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1995%E5%B9%B4Netscape%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%95%E5%85%A5%E4%BA%86script"><span class="toc-number">3.3.</span> <span class="toc-text">1995年Netscape浏览器引入了script</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1999%E5%B9%B4Microsoft-XMLHTTP"><span class="toc-number">3.4.</span> <span class="toc-text">1999年Microsoft.XMLHTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2008%E5%B9%B4cross-origin%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-number">3.5.</span> <span class="toc-text">2008年cross origin标准化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%90%E6%B8%90%E5%AE%8C%E7%BE%8E%EF%BC%8CSameSite-Cookie"><span class="toc-number">4.</span> <span class="toc-text">逐渐完美，SameSite Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">其他问题</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&text=img标签是Web标准的最大失误"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&is_video=false&description=img标签是Web标准的最大失误"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=img标签是Web标准的最大失误&body=Check out this article: http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&title=img标签是Web标准的最大失误"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&name=img标签是Web标准的最大失误&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2021/12/29/img%E6%A0%87%E7%AD%BE%E6%98%AFWeb%E6%A0%87%E5%87%86%E7%9A%84%E6%9C%80%E5%A4%A7%E5%A4%B1%E8%AF%AF/&t=img标签是Web标准的最大失误"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022
+    Zeptinary
+    <a href="https://www.trisunsoft.com/we/" target="_blank">免费 Windows 实用工具包</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="大部分编程语言的符号是大小写敏感（case sensitive）的，少数（如Basic）是大小写不敏感（case insensitive）的。然而PHP两种都不是。 PHP的函数、方法以及关键字是大小写不敏感的，而变量、常量都是大小写敏感的。至于类，又是大小写不敏感的了。 WTF！ 如果以大小写不一致的方式使用classloader，则在路径是大小写敏感的类UNIX环境下，就很容易产生问题。 尽管">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP从入门到出家（1）——奇葩的大小写规则">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="大部分编程语言的符号是大小写敏感（case sensitive）的，少数（如Basic）是大小写不敏感（case insensitive）的。然而PHP两种都不是。 PHP的函数、方法以及关键字是大小写不敏感的，而变量、常量都是大小写敏感的。至于类，又是大小写不敏感的了。 WTF！ 如果以大小写不一致的方式使用classloader，则在路径是大小写敏感的类UNIX环境下，就很容易产生问题。 尽管">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-29T07:18:21.000Z">
+<meta property="article:modified_time" content="2022-04-14T07:19:06.484Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>PHP从入门到出家（1）——奇葩的大小写规则</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2019/05/27/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%885%EF%BC%89%E2%80%94%E2%80%94%E8%BF%90%E7%AE%97%E7%AC%A6/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <!-- <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li> -->
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <!-- <span id="i-share" class="info" style="display:none;">分享文章</span> -->
+    </span>
+    <br/>
+    <!-- <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&text=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&is_video=false&description=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PHP从入门到出家（1）——奇葩的大小写规则&body=Check out this article: http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&name=PHP从入门到出家（1）——奇葩的大小写规则&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&t=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div> -->
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        PHP从入门到出家（1）——奇葩的大小写规则
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zeptinary</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-29T07:18:21.000Z" itemprop="datePublished">2019-05-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%90%90%E6%A7%BDPHP/">吐槽PHP</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>大部分编程语言的符号是大小写敏感（<code>case sensitive</code>）的，少数（如Basic）是大小写不敏感（<code>case insensitive</code>）的。然而PHP两种都不是。</p>
+<p>PHP的函数、方法以及关键字是大小写不敏感的，而变量、常量都是大小写敏感的。至于类，又是大小写不敏感的了。</p>
+<p>WTF！</p>
+<p>如果以大小写不一致的方式使用<code>classloader</code>，则在路径是大小写敏感的类UNIX环境下，就很容易产生问题。</p>
+<p>尽管PHP大小写规则奇葩，但是PHP程序员并不在乎这个问题，绝大多数人还是遵循使用和<code>manual</code>规则一致的大小写的代码风格。</p>
+<p>这导致一些很不友善的<code>API</code>命名，比如<code>htmlspecialchars</code>。</p>
+<p>为什么不是<code>html_special_chars</code>或<code>htmlSpecialChars</code>？</p>
+<p>了解函数是大小写不敏感后，我们就知道事实上<code>htmlSpecialChars</code>是可行的。实际上最初这个函数（在PHP2的文档中）就是以<code>CamelCase</code>方式命名的（<code>HtmlSpecialChars</code>）。但不知是出于什么原因，（或许是出于“统一”大小写风格？）PHP3开始，文档中所有函数全部小写了。</p>
+<p>但是最初为什么函数被设计为大小写不敏感的？</p>
+<blockquote>
+<p>PHP之父Rasmus在一个访谈中说：“…I then wrote a very simple parser that would pick tags out of HTML files and replace them with the output of the corresponding functions in the C library… The simple parser slowly grew to include conditional tags, then loop tags, functions, etc. At no point did I think I was writing a scripting language. I was simply adding a little bit of functionality to the macro replacement parser. I was still writing all my real business logic in C.”</p>
+</blockquote>
+<p>其实最初的PHP也许比今天更接近一个模板引擎！早期<code>PHP</code>就是宏替换（<code>macro replacement</code>），不负责业务逻辑。</p>
+<p>宏替换就是将<code>HTML</code>中的某些标签替换为C写的对应函数的输出。所以这个访谈里说，因为<code>HTML</code>的标签是大小写不敏感的的，所以在查找对应函数时，就按照大小写不敏感的方式了。后来的PHP发展的已经完全不同，但函数名就一直大小写不敏感了。</p>
+<p>实际上不仅函数，那些早期就有的结构，比如<code>if</code>、<code>for</code>之类的关键字，还有<code>echo</code>、<code>list</code>之类并非是函数的特殊指令，也都是大小写不敏感的。</p>
+<p>我们应该反过来问，为何在语言大部分元素都是大小写不敏感的情况下，变量名却是大小写敏感的？</p>
+<p>下面我们讨论下<code>class</code> 。<code>class</code>的属性和常量是大小写敏感的，方法是大小写不敏感的。这样和普通变量、常量、函数的大小写情况正好是一致的。难道这么设计是为了一致性？</p>
+<p>问题是类名本身为什么是大小写不敏感的？从直觉上说，类名难道不是更接近常量？</p>
+<p>这是因为PHP的<code>class</code>一开始其构造器并非现在的<code>__construct</code>，而是和class同名的方法。因为方法是大小写不敏感的，所以class名也就是大小写不敏感的。多么天才的设计！</p>
+<p>好了，现在是不是觉得自己可以很自豪的说，终于搞清楚PHP中各种大小写规则了！Naive！</p>
+<p>PHP有<code>goto</code>语句，跳转到指定的标记。<code>goto</code>作为关键字，肯定是大小写不敏感的。可是标记是敏感的。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&text=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&is_video=false&description=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PHP从入门到出家（1）——奇葩的大小写规则&body=Check out this article: http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&title=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&name=PHP从入门到出家（1）——奇葩的大小写规则&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/&t=PHP从入门到出家（1）——奇葩的大小写规则"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022
+    Zeptinary
+    <a href="https://www.trisunsoft.com/we/" target="_blank">免费 Windows 实用工具包</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

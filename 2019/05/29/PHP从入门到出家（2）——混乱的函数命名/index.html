@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="PHP的函数命名的不一致是被很多人诟病的。 引用知乎用户@涛吴在「PHP是最好的语言」这个梗是怎么来的的部分回答：  告诉你一个简单的例子来说明 PHP有多匪夷所思：PHP的核心函数命名很不一致，有 「strptime」这样类 C 函数的名字，有「nl2br」这样的简写，却也有「htmlspecialchars」这样的长名。后来人们发现这种不一致并非偶然，而是当 PHP还是只有不到一百个函数的小语">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP从入门到出家（2）——混乱的函数命名">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="PHP的函数命名的不一致是被很多人诟病的。 引用知乎用户@涛吴在「PHP是最好的语言」这个梗是怎么来的的部分回答：  告诉你一个简单的例子来说明 PHP有多匪夷所思：PHP的核心函数命名很不一致，有 「strptime」这样类 C 函数的名字，有「nl2br」这样的简写，却也有「htmlspecialchars」这样的长名。后来人们发现这种不一致并非偶然，而是当 PHP还是只有不到一百个函数的小语">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-29T07:45:13.000Z">
+<meta property="article:modified_time" content="2022-04-14T07:19:08.907Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>PHP从入门到出家（2）——混乱的函数命名</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%886%EF%BC%89%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E7%9A%84%E6%96%B0%E6%96%B9%E6%B3%95/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%881%EF%BC%89%E2%80%94%E2%80%94%E5%A5%87%E8%91%A9%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E8%A7%84%E5%88%99/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <!-- <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li> -->
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <!-- <span id="i-share" class="info" style="display:none;">分享文章</span> -->
+    </span>
+    <br/>
+    <!-- <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&text=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&is_video=false&description=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PHP从入门到出家（2）——混乱的函数命名&body=Check out this article: http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&name=PHP从入门到出家（2）——混乱的函数命名&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&t=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div> -->
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        PHP从入门到出家（2）——混乱的函数命名
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zeptinary</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-29T07:45:13.000Z" itemprop="datePublished">2019-05-29</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%90%90%E6%A7%BDPHP/">吐槽PHP</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>PHP的函数命名的不一致是被很多人诟病的。</p>
+<p>引用知乎用户<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/Metaphox">@涛吴</a>在<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26498147/answer/33029411">「PHP是最好的语言」这个梗是怎么来的</a>的部分回答：</p>
+<blockquote>
+<p>告诉你一个简单的例子来说明 PHP有多匪夷所思：PHP的核心函数命名很不一致，有 「strptime」这样类 C 函数的名字，有「nl2br」这样的简写，却也有「htmlspecialchars」这样的长名。后来人们发现这种不一致并非偶然，而是当 PHP还是只有不到一百个函数的小语言的时候，其作者决定用函数名的字符数量——来作为函数的 hash（！）。由于这个愚不可及的决定，PHP的函数名长度要尽可能地长短有秩、均匀分布，影响一直延续至今。<br>乍一看，只觉得匪夷所思，不过作者给了出处。用函数名的字符长度作为hash这个说法来自于 <a target="_blank" rel="noopener" href="http://news.php.net/php.internals/70691%EF%BC%8CPHP%E7%9A%84%E5%88%9B%E9%80%A0%E8%80%85">http://news.php.net/php.internals/70691，PHP的创造者</a> Rasmus 写道：</p>
+<p>Well, there were other factors in play there. htmlspecialchars was a very early function. Back when PHPhad less than 100 functions and the function hashing mechanism was strlen(). In order to get a nice hash distribution of function names across the various function name lengths names were picked specifically to make them fit into a specific length bucket. This was circa late 1994 when PHPwas a tool just for my own personal use and I wasn’t too worried about not being able to remember the few function names.</p>
+<p>-Rasmus</p>
+</blockquote>
+<p>在 PHP1.99s 和 2.0.1 的代码里确实可以看到，<code>lex.c</code>文件里先是创建了一个<code>cmd_table</code></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> cmd_table_t cmd_table[PHP_MAX_CMD_LEN+<span class="number">1</span>][PHP_MAX_CMD_NUM+<span class="number">1</span>] = &#123;</span><br><span class="line">  &#123; &#123; <span class="keyword">NULL</span>,<span class="number">0</span>,<span class="keyword">NULL</span> &#125; &#125;,        <span class="comment">/* 0 */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#123; &#123; <span class="keyword">NULL</span>,<span class="number">0</span>,<span class="keyword">NULL</span> &#125; &#125;,        <span class="comment">/* 1 */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#123; &#123; <span class="string">&quot;if&quot;</span>, <span class="keyword">IF</span>, <span class="keyword">NULL</span> &#125;,        <span class="comment">/* 2 */</span></span><br><span class="line">    &#123; <span class="keyword">NULL</span>,<span class="number">0</span>,<span class="keyword">NULL</span> &#125; &#125;, </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#123; &#123; <span class="string">&quot;max&quot;</span>, INTFUNC1,ArrayMax &#125;, <span class="comment">/* 3 */</span></span><br><span class="line">    &#123; <span class="string">&quot;min&quot;</span>, INTFUNC1,ArrayMin &#125;,</span><br><span class="line">    &#123; <span class="string">&quot;key&quot;</span>, KEY,<span class="keyword">NULL</span> &#125;,</span><br><span class="line">    &#123; <span class="string">&quot;end&quot;</span>, END,<span class="keyword">NULL</span> &#125;,</span><br><span class="line">    ...</span><br><span class="line">    &#123; <span class="string">&quot;shr&quot;</span>, INTFUNC2,shr &#125;,</span><br><span class="line">    &#123; <span class="keyword">NULL</span>,<span class="number">0</span>,<span class="keyword">NULL</span> &#125; &#125;, </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &#123; &#123; <span class="string">&quot;echo&quot;</span>,PHPECHO,<span class="keyword">NULL</span> &#125;,     <span class="comment">/* 4 */</span></span><br><span class="line">    &#123; <span class="string">&quot;else&quot;</span>,<span class="keyword">ELSE</span>,<span class="keyword">NULL</span> &#125;,</span><br><span class="line">    &#123; <span class="string">&quot;case&quot;</span>,<span class="keyword">CASE</span>,<span class="keyword">NULL</span> &#125;,</span><br><span class="line">    ...</span><br><span class="line">    &#123; <span class="string">&quot;ceil&quot;</span>,INTFUNC1,Ceil &#125;,</span><br><span class="line">    &#123; <span class="keyword">NULL</span>,<span class="number">0</span>,<span class="keyword">NULL</span> &#125; &#125;, </span><br><span class="line"></span><br><span class="line">   ...</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后，词法分析程序的代码里根据<code>token</code>查找指令的函数是这样定义的</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Look up a command in the command hash table </span></span><br><span class="line"><span class="comment"> * If not found, assume it is a user-defined function and return CUSTOMFUNC</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">int</span> <span class="constructor">CommandLookup(<span class="params">int</span> <span class="params">cmdlen</span>, YYSTYPE <span class="operator">*</span><span class="params">lvalp</span>)</span> &#123;</span><br><span class="line">  register <span class="built_in">int</span> i=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>(cmdlen&lt;=PHP_MAX_CMD_LEN) <span class="keyword">while</span>(cmd_table<span class="literal">[<span class="identifier">cmdlen</span>]</span><span class="literal">[<span class="identifier">i</span>]</span>.cmd) &#123;</span><br><span class="line">    <span class="keyword">if</span>(!strncasecmp(&amp;inbuf<span class="literal">[<span class="identifier">tokenmarker</span>]</span>,cmd_table<span class="literal">[<span class="identifier">cmdlen</span>]</span><span class="literal">[<span class="identifier">i</span>]</span>.cmd,cmdlen)) &#123;</span><br><span class="line">      *lvalp = (YYSTYPE) <span class="constructor">MakeToken(&amp;<span class="params">inbuf</span>[<span class="params">tokenmarker</span>],<span class="params">cmdlen</span>)</span>;</span><br><span class="line">      LastToken = cmd_table<span class="literal">[<span class="identifier">cmdlen</span>]</span><span class="literal">[<span class="identifier">i</span>]</span>.token;</span><br><span class="line">      return(cmd_table<span class="literal">[<span class="identifier">cmdlen</span>]</span><span class="literal">[<span class="identifier">i</span>]</span>.token);</span><br><span class="line">    &#125; </span><br><span class="line">    i++;</span><br><span class="line">  &#125;</span><br><span class="line">  *lvalp = (YYSTYPE) <span class="constructor">MakeToken(&amp;<span class="params">inbuf</span>[<span class="params">tokenmarker</span>],<span class="params">cmdlen</span>)</span>;</span><br><span class="line">  return(CUSTOMFUNC);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而执行内建函数的定义</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">IntFunc</span><span class="params">(<span class="type">char</span> *fnc_name)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> i=<span class="number">0</span>;</span><br><span class="line">  <span class="type">int</span> cmdlen = <span class="built_in">strlen</span>(fnc_name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>(cmd_table[cmdlen][i].cmd) &#123;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="built_in">strncasecmp</span>(fnc_name,cmd_table[cmdlen][i].cmd,cmdlen)) &#123;</span><br><span class="line">      cmd_table[cmdlen][i].<span class="built_in">fnc</span>();</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125; </span><br><span class="line">    i++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以，代码证明，确实PHP的早期版本就是拿strlen(fnc_name)作为<code>hash</code>的。</p>
+<p>这在reddit上也不出意外的引发了许多讨论。有人表示这是Rasmus当年做的trade-off，然后遭到许多人的质疑，因为必须得有（相对于缺点的）优点，才谈得上是trade-off，但是拿函数名长度做<code>hash</code>看不出有任何好处。</p>
+<p>实在要找“优点”的话，或许只能说是：能非常直观的看到<code>hash table</code>的桶数量和每个桶里有哪些名字，非常容易手动维护——比如可以手动调整每个桶里名字的顺序（通过迎合<code>token</code>出现的概率）来略微提高一丢丢性能。</p>
+<p>不过直接用首字母作为<code>hash</code>其实也差不多拥有同样的优点。而且还有更大的优点，你完全不用故意均匀分布，如果某个字母下数量太多，直接再按下一个字母<code>hash</code>就好了——好吧，这实际上是退化的tree，你可以在必要的时候在某个分支上进化一下。</p>
+<p>从软件工程的角度说，合理的方式是，一开始实现为直接遍历，然后在将来（必要的时候）进行性能优化——直接使用一个成熟可靠有人维护的<code>hash table</code>库。</p>
+<p>不过，这毕竟是非常早的PHP版本，至晚到PHP3，这个部分已经完全重写了。换句话说，官方也承认了这个设计的愚不可及！</p>
+<p>实际上，还有另一个也许更重要的原因。也是出自于 Rasmus：</p>
+<blockquote>
+<p>You also need to realize that there is consistency. It is just consistency from a different angle. PHPfrom day one was always a very thin wrapper on top of dozens, now hundreds, of underlying libraries. The function names and argument order, for the most part, were taken directly from these underlying libraries. So if you were familiar with MySQL’s C API, for example, you would instantly be able to navigate PHP’s mysql functions to the point where we barely needed PHPMySQL documentation because MySQL’s C library documentation covered it function for function. And for many of the str functions (the ones without an underscore), try typing: man strlen/strchr/strrchr/strtok/strpbr/strspn… at your Linux command line prompt.</p>
+<p>This approach covers the majority of the functions in PHP. The others are somewhat haphazard because it was not always obvious how to name these given there was no underlying API to mimic.</p>
+</blockquote>
+<p>简言之，是把锅甩给C（和用C写的库和API）。</p>
+<p>直接在核心库照搬C的API，没有底层API干脆就乱来了！如果结合早期的<code>hash</code>问题，我觉得这也许是破窗效应的“友善”说法吧</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&text=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&is_video=false&description=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PHP从入门到出家（2）——混乱的函数命名&body=Check out this article: http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&title=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&name=PHP从入门到出家（2）——混乱的函数命名&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/05/29/PHP%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%87%BA%E5%AE%B6%EF%BC%882%EF%BC%89%E2%80%94%E2%80%94%E6%B7%B7%E4%B9%B1%E7%9A%84%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/&t=PHP从入门到出家（2）——混乱的函数命名"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022
+    Zeptinary
+    <a href="https://www.trisunsoft.com/we/" target="_blank">免费 Windows 实用工具包</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

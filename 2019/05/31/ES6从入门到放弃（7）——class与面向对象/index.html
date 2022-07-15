@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="简介在ES5中，经常使用方法或者对象去模拟类的使用，并基于原型实现继承，虽然可以实现功能，但是代码并不优雅，很多人还是倾向于用class来组织代码，很多类库、框架创造了自己的API来实现class的功能。 ES6时代终于有了class（类）语法，能让我们可以用更简明的语法实现继承，也使代码的可读性变得更高，同时为以后的JavaScript语言版本添加更多的面向对象特征打下基础。 定义ES51234">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6从入门到放弃（7）——class与面向对象">
+<meta property="og:url" content="http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Zeptinary的博客">
+<meta property="og:description" content="简介在ES5中，经常使用方法或者对象去模拟类的使用，并基于原型实现继承，虽然可以实现功能，但是代码并不优雅，很多人还是倾向于用class来组织代码，很多类库、框架创造了自己的API来实现class的功能。 ES6时代终于有了class（类）语法，能让我们可以用更简明的语法实现继承，也使代码的可读性变得更高，同时为以后的JavaScript语言版本添加更多的面向对象特征打下基础。 定义ES51234">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-31T09:55:32.000Z">
+<meta property="article:modified_time" content="2022-07-15T01:09:25.237Z">
+<meta property="article:author" content="Zeptinary">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>ES6从入门到放弃（7）——class与面向对象</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2019/06/03/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%888%EF%BC%89%E2%80%94%E2%80%94%E6%A8%A1%E5%9D%97%E5%8C%96/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%886%EF%BC%89%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E7%9A%84%E6%96%B0%E6%96%B9%E6%B3%95/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <!-- <li><a class="icon" aria-label="分享文章" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li> -->
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <!-- <span id="i-share" class="info" style="display:none;">分享文章</span> -->
+    </span>
+    <br/>
+    <!-- <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&text=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&is_video=false&description=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ES6从入门到放弃（7）——class与面向对象&body=Check out this article: http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&name=ES6从入门到放弃（7）——class与面向对象&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&t=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div> -->
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ES5"><span class="toc-number">1.1.1.</span> <span class="toc-text">ES5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6"><span class="toc-number">1.1.2.</span> <span class="toc-text">ES6</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E5%8F%82"><span class="toc-number">1.2.</span> <span class="toc-text">传参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ES5-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">ES5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6-1"><span class="toc-number">1.3.2.</span> <span class="toc-text">ES6</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="toc-number">2.</span> <span class="toc-text">封装与继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#extends"><span class="toc-number">2.1.</span> <span class="toc-text">extends</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ES5-2"><span class="toc-number">2.1.1.</span> <span class="toc-text">ES5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6-2"><span class="toc-number">2.1.2.</span> <span class="toc-text">ES6</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super"><span class="toc-number">2.2.</span> <span class="toc-text">super</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">2.2.1.</span> <span class="toc-text">作为函数调用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E5%90%91%E7%88%B6%E7%B1%BB%E7%9A%84%E5%8E%9F%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.2.2.</span> <span class="toc-text">指向父类的原型对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getter%EF%BC%88%E5%8F%96%E5%80%BC%E5%87%BD%E6%95%B0%EF%BC%89%E5%92%8Csetter%EF%BC%88%E5%AD%98%E5%80%BC%E5%87%BD%E6%95%B0%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">getter（取值函数）和setter（存值函数）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        ES6从入门到放弃（7）——class与面向对象
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Zeptinary</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-31T09:55:32.000Z" itemprop="datePublished">2019-05-31</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/ECMAScript-6/">ECMAScript 6</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在ES5中，经常使用方法或者对象去模拟类的使用，并基于原型实现继承，虽然可以实现功能，但是代码并不优雅，很多人还是倾向于用<code>class</code>来组织代码，很多类库、框架创造了自己的API来实现<code>class</code>的功能。</p>
+<p>ES6时代终于有了<code>class</code>（类）语法，能让我们可以用更简明的语法实现继承，也使代码的可读性变得更高，同时为以后的JavaScript语言版本添加更多的面向对象特征打下基础。</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><h4 id="ES5"><a href="#ES5" class="headerlink" title="ES5"></a>ES5</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params"> name , age </span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">say</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;我叫&#x27;</span> + <span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&#x27;,今年&#x27;</span> + <span class="variable language_">this</span>.<span class="property">age</span> + <span class="string">&#x27;岁&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span>  p = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;大彬哥&#x27;</span>,<span class="number">18</span>);  <span class="comment">// Person &#123;name: &quot;大彬哥&quot;, age: 18&#125;</span></span><br><span class="line">p.<span class="title function_">say</span>()                           <span class="comment">//&quot;我叫大彬哥,今年18岁&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用ES5语法定义了一个<code>Person</code>类，该类有<code>name</code>和<code>age</code>两个属性和一个原型<code>say</code>方法。</p>
+<p>这种写法跟传统的面向对象语言（比如C++和Java）差异很大。接下来我们看下ES6类的写法，这个就很接近于传统面向对象语言了。</p>
+<h4 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>( name , age ) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">  &#125;</span><br><span class="line">  say() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;我叫&#x27;</span> + <span class="keyword">this</span>.name + <span class="string">&#x27;,今年&#x27;</span> + <span class="keyword">this</span>.age + <span class="string">&#x27;岁&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span>  p = new Person(<span class="string">&#x27;大彬哥&#x27;</span>,<span class="number">18</span>);  <span class="comment">// Person &#123;name: &quot;大彬哥&quot;, age: 18&#125;</span></span><br><span class="line">p.say()                           <span class="comment">//&quot;我叫大彬哥,今年18岁&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码定义了一个同样的<code>Person</code>类，<code>constructor</code>方法就是构造方法，而<code>this</code>关键字则代表实例对象，这更接近传统语言的写法。</p>
+<blockquote>
+<p>注意，虽然引入了<code>class</code>关键字，但ES6中并没有真的引入类这个概念，通过<code>class</code>定义的仍然是函数</p>
+</blockquote>
+<p><code>console.log(typeof Person); // &#39;function&#39;</code></p>
+<p><code>class</code>仅仅是<code>function</code>模拟类的一种语法糖，通过更简单直观的语法去实现原型链继承。</p>
+<h3 id="传参"><a href="#传参" class="headerlink" title="传参"></a>传参</h3><p>用<code>constructor()</code>进行类的参数的传递。传递参数后可以直接使用<code>this.xxx</code>进行调用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">   <span class="title function_">constructor</span>(<span class="params">a,b</span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">a</span>=a;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">b</span>=b;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="title function_">add</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">a</span> + <span class="variable language_">this</span>.<span class="property">b</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="number">18</span>,<span class="number">30</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p.<span class="title function_">add</span>());  <span class="comment">// 48 (18+30)</span></span><br></pre></td></tr></table></figure>
+
+<p>用<code>constructor</code>来传递参数，然后用了一个<code>add</code>方法，把参数相加。这和以前的函数传参方法有些不一样。</p>
+<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><p>在面向对象语言中，静态方法是指不需要实例化，可以通过类名直接调用的方法，但静态方法不会继承到类实例中，因此静态方法经常用来作为工具函数。比如我们经常用的<code>Math.random()</code>，我们并不需要先<code>new</code>一个<code>Math</code>然后再去用，一是没必要，二是用起来太繁琐。</p>
+<h4 id="ES5-1"><a href="#ES5-1" class="headerlink" title="ES5"></a>ES5</h4><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, sex</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">Person.walk = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.<span class="built_in">log</span>(<span class="string">&#x27;我会走路&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.walk();  <span class="comment">// 我会走路</span></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person();</span><br><span class="line">person.walk();  <span class="comment">// TypeError</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="ES6-1"><a href="#ES6-1" class="headerlink" title="ES6"></a>ES6</h4><p>class类定义中，可以使用·关键字定义</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">walk</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;我会走路&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Person</span>.<span class="title function_">walk</span>();  <span class="comment">// 我会走路</span></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">person.<span class="title function_">walk</span>();  <span class="comment">// TypeError</span></span><br></pre></td></tr></table></figure>
+
+<p><code>static</code>关键字是ES6的另一个语法糖，<code>static</code>使静态方法声明也成为了一个一等公民。</p>
+<p>于此同时，静态方法也是可以从子类中的<code>super</code>对象上调用的。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  constructor() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  static walk()&#123;</span><br><span class="line">      <span class="keyword">return</span> &#x27;我会走路&#x27;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span> <span class="keyword">extends</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  static walk() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.walk() + &#x27;, 我还会跑步&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">People</span>.walk();  <span class="comment">//&quot;我会走路, 我还会跑步&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="封装与继承"><a href="#封装与继承" class="headerlink" title="封装与继承"></a>封装与继承</h2><p>封装和继承，是面向对象编程三大核心特征中非常重要的两个，封装和继承在我们实际生活中也有非常多的应用。举个例子，去驴肉火烧店去吃饭。</p>
+<p>老板把驴肉面和火烧一起买，起名字叫“精英驴火套餐”，这就是封装。</p>
+<p>而进去以后跟老板说，老板给我来个“82年的驴火套餐”这就是继承。当然了你不仅仅能继承，还能扩展自己的功能。比如你可以跟老板说，老板再给我加一个驴板肠。</p>
+<h3 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h3><h4 id="ES5-2"><a href="#ES5-2" class="headerlink" title="ES5"></a>ES5</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="constructor">Child(<span class="params">firstName</span>, <span class="params">lastName</span>, <span class="params">age</span>)</span> &#123;</span><br><span class="line">  <span class="module-access"><span class="module"><span class="identifier">Parent</span>.</span></span>call(this, firstName, lastName)</span><br><span class="line">  this.age = age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">Child</span>.</span></span>prototype = <span class="module-access"><span class="module"><span class="identifier">Object</span>.</span></span>create(<span class="module-access"><span class="module"><span class="identifier">Parent</span>.</span></span>prototype)</span><br><span class="line"><span class="module-access"><span class="module"><span class="identifier">Child</span>.</span></span>constructor = Child</span><br></pre></td></tr></table></figure>
+
+<h4 id="ES6-2"><a href="#ES6-2" class="headerlink" title="ES6"></a>ES6</h4><p>新的extends关键字解决了这个问题：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Parent</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码定义了一个<code>Child</code>类，该类通过<code>extends</code>关键字，继承了<code>Parent</code>类的所有属性和方法。</p>
+<p>由于没有在<code>Child</code>内部写任何代码，所以这两个类完全一样，等于复制了一个<code>Parent</code>类。</p>
+<p>之后，我们在Child内部加上代码</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> <span class="keyword">extends</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  constructor(firstName, lastName, age) &#123;</span><br><span class="line">    <span class="keyword">super</span>(firstName, lastName)  </span><br><span class="line">    <span class="comment">// 调用父类的constructor(firstName, lastName)</span></span><br><span class="line">    <span class="keyword">this</span>.age = age</span><br><span class="line">  &#125;</span><br><span class="line">  speak()&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.age + &#x27; &#x27; + <span class="keyword">super</span>.speak(); </span><br><span class="line">    <span class="comment">// 调用父类的speak()</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用简介的<code>extends</code>达到继承的目的，而非杂乱的<code>Object.create()</code>、<code>.proto</code>、<code>Object.setPrototypeOf()</code>，这样能让我们更顺利的扩充功能。</p>
+<h3 id="super"><a href="#super" class="headerlink" title="super"></a>super</h3><p><code>super</code>这个关键字，既可以当作函数使用，也可以当作对象使用。在这两种情况下，它的用法完全不同。</p>
+<h4 id="作为函数调用"><a href="#作为函数调用" class="headerlink" title="作为函数调用"></a>作为函数调用</h4><p>代表父类的构造函数，ES6中规定，子类的构造函数必须执行一次<code>super</code>函数。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    <span class="keyword">super</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，子类B的构造函数之中的<code>super()</code>，代表调用父类的构造函数，这是必须的，否则 JavaScript引擎会报错。</p>
+<blockquote>
+<p>注意，<code>super</code>虽然代表了父类A的构造函数，但是返回的是子类B的实例，即<code>super</code>内部的<code>this</code>指的是B，因此<code>super()</code>在这里相当于<code>A.prototype.constructor.call(this)</code>。</p>
+</blockquote>
+<h4 id="指向父类的原型对象"><a href="#指向父类的原型对象" class="headerlink" title="指向父类的原型对象"></a>指向父类的原型对象</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  p() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  constructor() &#123;</span><br><span class="line">    <span class="keyword">super</span>();</span><br><span class="line">    console.log(<span class="keyword">super</span>.p()); <span class="comment">// 2</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let b = <span class="keyword">new</span> <span class="type">B</span>();</span><br></pre></td></tr></table></figure>
+
+<p>与Java一样，JavaScript也使用<code>extends</code>关键字实现继承，子类中可以通过<code>super</code>关键字调用父类，在<code>constructor</code>里面，<code>super</code>的用法是<code>super()</code>。它相当于一个函数，调用它等于调用父类的<code>constructor</code>。</p>
+<p>但在普通方法里面，<code>super</code>的用法是<code>super.prop</code>或者<code>super.method()</code>，它相当于一个指向对象的<code>Prototype</code>的属性。</p>
+<h3 id="getter（取值函数）和setter（存值函数）"><a href="#getter（取值函数）和setter（存值函数）" class="headerlink" title="getter（取值函数）和setter（存值函数）"></a>getter（取值函数）和setter（存值函数）</h3><p>与ES5一样，在“类”的内部可以使用<code>get</code>和<code>set</code>关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">prop</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;getter&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">set</span> <span class="title function_">prop</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;setter: &#x27;</span>+value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">p.<span class="property">prop</span> = <span class="number">666</span>;   <span class="comment">// setter: 666</span></span><br><span class="line">p.<span class="property">prop</span>           <span class="comment">// &#x27;getter&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>JavaScript开始的时候保留字中就包括：class、extends、super。这些就是为将来在js中支持面向对象的类机制而预留的。</li>
+<li>ES6语法中使用到了这些保留字，这些保留字成功升级成了关键字。</li>
+<li>通过这些新的关键字，使类成为了JavaScript中一个新的一等公民。</li>
+<li>类的新关键字仅仅是建立在旧的原型系统上的语法糖。这样做的原因是为了保证向后兼容性。也就是，旧代码可以在不做任何hack的情况下，与新代码同时运行。</li>
+<li>class使代码的可读性变得更高，并且为今后版本里更多面向对象的新特性打下了基础。</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ES5"><span class="toc-number">1.1.1.</span> <span class="toc-text">ES5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6"><span class="toc-number">1.1.2.</span> <span class="toc-text">ES6</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E5%8F%82"><span class="toc-number">1.2.</span> <span class="toc-text">传参</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ES5-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">ES5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6-1"><span class="toc-number">1.3.2.</span> <span class="toc-text">ES6</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="toc-number">2.</span> <span class="toc-text">封装与继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#extends"><span class="toc-number">2.1.</span> <span class="toc-text">extends</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ES5-2"><span class="toc-number">2.1.1.</span> <span class="toc-text">ES5</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6-2"><span class="toc-number">2.1.2.</span> <span class="toc-text">ES6</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super"><span class="toc-number">2.2.</span> <span class="toc-text">super</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">2.2.1.</span> <span class="toc-text">作为函数调用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%87%E5%90%91%E7%88%B6%E7%B1%BB%E7%9A%84%E5%8E%9F%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.2.2.</span> <span class="toc-text">指向父类的原型对象</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getter%EF%BC%88%E5%8F%96%E5%80%BC%E5%87%BD%E6%95%B0%EF%BC%89%E5%92%8Csetter%EF%BC%88%E5%AD%98%E5%80%BC%E5%87%BD%E6%95%B0%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">getter（取值函数）和setter（存值函数）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&text=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&is_video=false&description=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ES6从入门到放弃（7）——class与面向对象&body=Check out this article: http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&title=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&name=ES6从入门到放弃（7）——class与面向对象&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://sdzbzjh.github.io/2019/05/31/ES6%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%EF%BC%887%EF%BC%89%E2%80%94%E2%80%94class%E4%B8%8E%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/&t=ES6从入门到放弃（7）——class与面向对象"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2022
+    Zeptinary
+    <a href="https://www.trisunsoft.com/we/" target="_blank">免费 Windows 实用工具包</a>
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/sdzbzjh">项目</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
